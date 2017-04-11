@@ -1,0 +1,693 @@
+<div class="container-fluid" data-jquery-augmentation>
+    <div class="row">
+        <app-nav menu-item="searchData">
+            <a href="" ui-sref="searchdata">Search Data</a> <span>></span>  <i>Data Comparison Details</i>
+        </app-nav>
+        <!-- Body Page -->
+        <div class="main-container">
+            <div class="dash-page compair">
+                <div class="body-dash">
+                    <div class="cover-left">
+                        <div class="group-left">
+                            <div class="head">
+                                <p class="heading">
+                                    Data Comparison Details
+                                </p>
+                                <div class="right-btn">
+                                    <a href="javascript:;" class="load" data-ng-click="vm.downloadCsv()">
+                                        <i class="icons"></i>
+                                    </a>
+                                    <a href="javascript:;" class="print"
+                                       data-ng-click="activeTab === 'chart' ? vm.downloadPdf('#tradeDataLineChart') : vm.downloadPdf('#dataComparisonMap')">
+                                        <i class="icons"></i>
+                                    </a>
+                                    <a data-ng-show="userInfo.isLoggedIn" href="javascript:;" class="share">
+                                        <i class="icons"></i>
+                                    </a>
+                                </div>
+                                <div class="right-more">
+                                    <a data-ng-show="userInfo.isLoggedIn" href="javascript:;" class="save">Save</a>
+                                </div>
+                            </div>
+                            <!-- HEADING -->
+                            <div class="name-query active" data-ng-show="userInfo.isLoggedIn">
+                                <div class="head-name">
+                                    <p class="name">
+                                        Query Name
+                                        <span class="detail">
+                                            {{query.name}}
+                                        </span>
+                                    </p>
+                                    <a href="javascript:;" class="show-less">Show Less</a>
+                                    <a href="javascript:;" class="show-more">Show More</a>
+                                </div>
+                                <div class="body-name">
+                                    <ul class="create-by">
+                                        <li>
+                                            <p>
+                                                <span class="title">Created on</span>
+                                                <span class="text"> {{query.createdOn | date:'medium'}}</span>
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <p>
+                                                <span class="title">Last Update on</span>
+                                                <span class="text"> {{query.lastUpdatedOn | date:'medium'}}</span>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Name Query  -->
+                            <div class="main-import">
+                                <div class="cover-import">
+                                    <div class="sub-tag">
+                                        <ul>
+                                            <li data-ng-class="{'active' : activeTab==='chart'}"><a href="javascript:;" data-ng-click="activeTab='chart'">Chart</a></li>
+                                            <li data-ng-class="{'active' : activeTab==='map'}"><a href="javascript:;" data-ng-click="vm.setActiveTab('map')">Map</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="content-here">
+                                        <div data-ng-show="activeTab==='chart'" class="tag-chart tag-content">
+                                            <div class="chart-here">
+                                                <p class="title">Import / Export Summary {{query.yearStart}} - {{query.yearEnd}}</p>
+
+                                                <div class="line-chart line-chart-new" id="tradeDataLineChart"></div>
+                                                <div class="map-export-pdf data-compare">
+                                                    <div class="left" >
+                                                        <div class="info-head">Import / Export Summary</span><br/>
+                                                            <span>{{query.yearStart}} - {{query.yearEnd}}</span>
+                                                        </div>
+                                                        <div class="info-body">
+                                                            Importers:                                             
+                                                            <span data-ng-repeat="item in query.importerCountryCodes">
+                                                                {{vm.getCountryByCode(item).fullName}},
+                                                            </span>
+                                                            <br/>
+                                                            Exporters:
+                                                            <span data-ng-repeat="item in query.exporterCountryCodes">
+                                                                {{vm.getCountryByCode(item).fullName}},
+                                                            </span>
+                                                            <br/>
+                                                            Commodities:
+                                                            <span data-ng-repeat="item in query.commodityCodes">
+                                                                {{vm.getCommodityById(item).name.trim()}},
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <div class="image-container">
+                                                            <img />
+                                                            <p data-ng-repeat="legendPoint in chartLegend" class="point">
+                                                                <span class="circle" data-ng-style="legendPoint.style"></span>
+                                                                {{legendPoint.role}}: {{vm.getCountryByCode(legendPoint.name).fullName}} ({{legendPoint.commodity}})
+                                                            </p>
+                                                        </div>
+                                                        <p class="title">Import / Export Summary {{query.yearStart}} - {{query.yearEnd}}</p>
+                                                        <table ng-if="tradeData.length > 0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a href=""><span>Year</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Commodity Name</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Importer</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Importer netweightKg</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Importer tradeValueUSD</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Exporter</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Exporter netweightKg</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Exporter tradeValueUSD</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Diff in netweightKg</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Diff in tradeValueUSD</span></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr data-ng-repeat="item in tradeData | orderBy:sortType:sortReverse">
+                                                                    <td><span>{{item.year}}</span></td>
+                                                                    <td><span>{{item.commodityName}}</span></td>
+                                                                    <td><span>{{item.importer}}</span></td>
+                                                                    <td><span ng-if="item.importedVolumeDisplayValue !== '-'">{{item.importedVolumeDisplayValue | number:0}} kg</span><span ng-if="item.importedVolumeDisplayValue === '-'">-</span></td>
+                                                                    <td><span ng-if="item.importedValueDisplayValue !== '-'">{{item.importedValueDisplayValue | currency:undefined:0 }}</span><span ng-if="item.importedValueDisplayValue === '-'">-</span></td>
+                                                                    <td><span>{{item.exporter}}</span></td>
+                                                                    <td><span ng-if="item.exportedVolumeDisplayValue !== '-'">{{item.exportedVolumeDisplayValue | number:0}} kg</span><span ng-if="item.exportedVolumeDisplayValue === '-'">-</span></td>
+                                                                    <td><span ng-if="item.exportedValueDisplayValue !== '-'">{{item.exportedValueDisplayValue | currency:undefined:0 }}</span><span ng-if="item.exportedValueDisplayValue === '-'">-</span></td>                                                
+                                                                    <td><span ng-if="item.exportedVolumeDisplayValue !== '-' && item.importedVolumeDisplayValue !== '-'">{{item.volumeDiff | number:0}} kg</span><span ng-if="item.exportedVolumeDisplayValue === '-' || item.importedVolumeDisplayValue === '-'" >-</span></td>
+                                                                    <td><span ng-if="item.exportedValueDisplayValue !== '-' && item.importedValueDisplayValue !== '-'">{{item.valueDiff | currency:undefined:0}}</span><span ng-if="item.exportedValueDisplayValue === '-' || item.importedValueDisplayValue === '-'">-</span></td>                                                            
+                                                               </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="no-data" ng-if="tradeData.length === 0">
+                                                            No Data
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="cover-point">
+                                                    <p data-ng-repeat="legendPoint in chartLegend" class="point">
+                                                        <span class="circle" data-ng-style="legendPoint.style"></span>
+                                                        {{legendPoint.role}}: {{vm.getCountryByCode(legendPoint.name).fullName}} ({{legendPoint.commodity}})
+                                                    </p>
+                                                </div>
+                                                <div class="tool-chart-sure">
+                                                    <p class="title-tool">
+                                                        2014 Discrepancy Details
+                                                    </p>
+                                                    <div class="main-tool">
+                                                        <div class="items">
+                                                            <p class="sub-titl">
+                                                                Russia exports to USA, China, Japan,
+                                                                South Korea :
+                                                            </p>
+                                                            <div class="head-item">
+                                                                <span class="vol">
+                                                                    Volume
+                                                                </span>
+                                                                <span class="val">
+                                                                    Value
+                                                                </span>
+                                                            </div>
+                                                            <span class="one">
+                                                                2,500,000 kg
+                                                            </span>
+                                                            <span class="border">
+                                                                |
+                                                            </span>
+                                                            <span class="one two">$ 25,000,000,00</span>
+                                                        </div>
+                                                        <div class="items">
+                                                            <p class="sub-titl">
+                                                                USA, China, Japan, South Korea imports
+                                                                from Russia in :
+                                                            </p>
+                                                            <div class="head-item">
+                                                                <span class="vol">
+                                                                    Volume
+                                                                </span>
+                                                                <span class="val">
+                                                                    Value
+                                                                </span>
+                                                            </div>
+                                                            <span class="one">
+                                                                5,000,000 kg
+                                                            </span>
+                                                            <span class="border">
+                                                                |
+                                                            </span>
+                                                            <span class="one two">$ 50,000,000,00</span>
+                                                        </div>
+                                                        <div class="items">
+                                                            <p class="sub-titl">
+                                                                Discrepancy :
+                                                            </p>
+                                                            <div class="head-item">
+                                                                <span class="vol">
+                                                                    Volume
+                                                                </span>
+                                                                <span class="val">
+                                                                    Value
+                                                                </span>
+                                                            </div>
+                                                            <span class="one">
+                                                                2,500,000 kg
+                                                            </span>
+                                                            <span class="border">
+                                                                |
+                                                            </span>
+                                                            <span class="one two">$ 25,000,000,00</span>
+                                                        </div>
+                                                        <div class="items">
+                                                            <p class="sub-titl">
+                                                                Percentage :
+                                                            </p>
+                                                            <p class="red">
+                                                                100%
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <span class="arrow_box">
+
+                                                    </span>
+                                                    <span class="arrow_box clone">
+
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Chart-tag -->
+                                        <div data-ng-show="activeTab==='map'" class="tag-map tag-content">
+                                            <div class="cover-map overflow-hidden">
+                                                <p class="title">Import / Export Summary {{query.yearStart}} - {{query.yearEnd}}</p>
+                                                <div id="dataComparisonMap" style="position: relative;"></div>
+                                                <p class="point importers">Importers</p>
+                                                <p class="point exporters">Exporters</p>
+                                                <div class="ranger-year">
+                                                    <input type="text" class="range-year" name="example_name" value="" />
+                                                </div>
+                                                <div class="map-export-pdf data-compare">
+                                                    <div class="left" >
+                                                        <div class="info-head">Import / Export Summary</span><br/>
+                                                            <span>{{query.yearStart}} - {{query.yearEnd}}</span>
+                                                        </div>
+                                                        <div class="info-body">
+                                                            Importers:                                             
+                                                            <span data-ng-repeat="item in query.importerCountryCodes">
+                                                                {{vm.getCountryByCode(item).fullName}},
+                                                            </span>
+                                                            <br/>
+                                                            Exporters:
+                                                            <span data-ng-repeat="item in query.exporterCountryCodes">
+                                                                {{vm.getCountryByCode(item).fullName}},
+                                                            </span>
+                                                            <br/>
+                                                            Commodities:
+                                                            <span data-ng-repeat="item in query.commodityCodes">
+                                                                {{vm.getCommodityById(item).name.trim()}},
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <div class="image-container">
+                                                            <img />
+                                                            <p class="point importers"><span class="circle importers"></span>Importers</p>
+                                                            <p class="point exporters"><span class="circle exporters"></span>Exporters</p>
+                                                        </div>
+                                                        <p class="title">Import / Export Summary {{query.yearStart}} - {{query.yearEnd}}</p>
+                                                        <table ng-if="tradeData.length > 0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a href=""><span>Year</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Commodity Name</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Importer</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Importer netweightKg</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Importer tradeValueUSD</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Exporter</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Exporter netweightKg</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Exporter tradeValueUSD</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Diff in netweightKg</span></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href=""><span>Diff in tradeValueUSD</span></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr data-ng-repeat="item in tradeData | orderBy:sortType:sortReverse">
+                                                                    <td><span>{{item.year}}</span></td>
+                                                                    <td><span>{{item.commodityName}}</span></td>
+                                                                    <td><span>{{item.importer}}</span></td>
+                                                                    <td><span ng-if="item.importedVolumeDisplayValue !== '-'">{{item.importedVolumeDisplayValue | number:0}} kg</span><span ng-if="item.importedVolumeDisplayValue === '-'">-</span></td>
+                                                                    <td><span ng-if="item.importedValueDisplayValue !== '-'">{{item.importedValueDisplayValue | currency:undefined:0 }}</span><span ng-if="item.importedValueDisplayValue === '-'">-</span></td>
+                                                                    <td><span>{{item.exporter}}</span></td>
+                                                                    <td><span ng-if="item.exportedVolumeDisplayValue !== '-'">{{item.exportedVolumeDisplayValue | number:0}} kg</span><span ng-if="item.exportedVolumeDisplayValue === '-'">-</span></td>
+                                                                    <td><span ng-if="item.exportedValueDisplayValue !== '-'">{{item.exportedValueDisplayValue | currency:undefined:0 }}</span><span ng-if="item.exportedValueDisplayValue === '-'">-</span></td>                                                
+                                                                    <td><span ng-if="item.exportedVolumeDisplayValue !== '-' && item.importedVolumeDisplayValue !== '-'">{{item.volumeDiff | number:0}} kg</span><span ng-if="item.exportedVolumeDisplayValue === '-' || item.importedVolumeDisplayValue === '-'" >-</span></td>
+                                                                    <td><span ng-if="item.exportedValueDisplayValue !== '-' && item.importedValueDisplayValue !== '-'">{{item.valueDiff | currency:undefined:0}}</span><span ng-if="item.exportedValueDisplayValue === '-' || item.importedValueDisplayValue === '-'">-</span></td>                                                         
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="no-data" ng-if="tradeData.length === 0">
+                                                            No Data
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cover-comment">
+                                        <div class="list-comment">
+                                            <div class="tag-table tag-content">
+                                                <div class="table-here">
+                                                    <p class="title">Import / Export Summary {{query.yearStart}} - {{query.yearEnd}}</p>
+                                                    <div class="alert-legend import-export-alert-legend"><span></span>Import/Export netweight discrepancy | Threshold = {{userInfo.weightDiscrepancyThreshold}}%</div>
+                                                    <div class="alert-legend volume-changes-alert-legend"><span></span>Changes in netweight since last year | Threshold = {{userInfo.volumeChangesThreshold}}%</div>
+                                                    <div class="alert-legend both-alerts-legend"><span></span>Import/Export netweight discrepancy and changes in netweight since last year</div>
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'year'; sortReverse = !sortReverse"><span>Year</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'commodityName'; sortReverse = !sortReverse"><span>Commodity Name</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'importer'; sortReverse = !sortReverse"><span>Importer</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'importedVolumeDisplayValue'; sortReverse = !sortReverse"><span>Importer netweightKg</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'importedValueDisplayValue'; sortReverse = !sortReverse"><span>Importer tradeValueUSD</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'exporter'; sortReverse = !sortReverse"><span>Exporter</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'exportedVolumeDisplayValue'; sortReverse = !sortReverse"><span>Exporter netweightKg</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'exportedValueDisplayValue'; sortReverse = !sortReverse"><span>Exporter tradeValueUSD</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'volumeDiff'; sortReverse = !sortReverse"><span>Diff in netweightKg</span></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="" data-ng-click="sortType = 'valueDiff'; sortReverse = !sortReverse"><span>Diff in tradeValueUSD</span></a>
+                                                                </td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr data-ng-repeat="item in tradeData | orderBy:sortType:sortReverse"
+                                                                data-ng-class="(item.hasWeightAlert && item.hasVolumeAlert)
+                                                                    ? 'both-alerts'
+                                                                    : (item.hasWeightAlert
+                                                                        ? 'import-export-alert'
+                                                                        : (item.hasVolumeAlert ? 'volume-changes-alert' : ''))">
+                                                                <td><span>{{item.year}}</span></td>
+                                                                <td><span>{{item.commodityName}}</span></td>
+                                                                <td><span>{{item.importer}}</span></td>
+                                                                <td><span ng-if="item.importedVolumeDisplayValue !== '-'">{{item.importedVolumeDisplayValue | number:0}} kg</span><span ng-if="item.importedVolumeDisplayValue === '-'">-</span></td>
+                                                                <td><span ng-if="item.importedValueDisplayValue !== '-'">{{item.importedValueDisplayValue | currency:undefined:0 }}</span><span ng-if="item.importedValueDisplayValue === '-'">-</span></td>
+                                                                <td><span>{{item.exporter}}</span></td>
+                                                                <td><span ng-if="item.exportedVolumeDisplayValue !== '-'">{{item.exportedVolumeDisplayValue | number:0}} kg</span><span ng-if="item.exportedVolumeDisplayValue === '-'">-</span></td>
+                                                                <td><span ng-if="item.exportedValueDisplayValue !== '-'">{{item.exportedValueDisplayValue | currency:undefined:0 }}</span><span ng-if="item.exportedValueDisplayValue === '-'">-</span></td>                                                
+                                                                <td><span ng-if="item.exportedVolumeDisplayValue !== '-' && item.importedVolumeDisplayValue !== '-'">{{item.volumeDiff | number:0}} kg</span><span ng-if="item.exportedVolumeDisplayValue === '-' || item.importedVolumeDisplayValue === '-'" >-</span></td>
+                                                                <td><span ng-if="item.exportedValueDisplayValue !== '-' && item.importedValueDisplayValue !== '-'">{{item.valueDiff | currency:undefined:0}}</span><span ng-if="item.exportedValueDisplayValue === '-' || item.importedValueDisplayValue === '-'">-</span></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <p class="fine-print">Data is compiled from UN Comtrade data.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Group One -->
+                    </div>
+                    <!-- Body Left -->
+                    <div class="cover-right">
+                        <div class="notificate right-filter-content">
+                            <div class="head">
+                                <p class="title">Filter</p>
+                                <div class="tool">
+                                    <a class="hide-unless" href="javascript:;">Hide</a>
+                                    <a class="hide-unless clone" href="javascript:;">Expand</a>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="body">
+                                <!-- Period -->
+                                <div class="group query-year">
+                                    <div class="tool-left active">
+                                        <a href="javascript:;" class="text ">Periods (Year)</a>
+                                    </div>
+                                    <div class="right-input when-choise">
+                                        <div class="drop-small hide-text">
+                                            <select data-ng-model="query.yearStart"
+                                                    data-ng-options="year for year in periodYears"
+                                                    class="dropdown-show ignore yearStart wide" required></select>
+                                        </div>
+                                        <span class="border">
+                                            -
+                                        </span>
+                                        <div class="drop-small hide-text">
+                                            <select data-ng-model="query.yearEnd"
+                                                    data-ng-options="year for year in periodYears"
+                                                    class="dropdown-show ignore yearEnd wide" required></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Commodities -->
+                                <div class="group query-fisheries-product">
+                                    <div class="tool-left">
+                                        <a href="javascript:;" class="text">Fisheries Product</a>
+                                    </div>
+                                    <div class="right-input when-choise">
+                                        <div class="drop-full extended-left-width multi-line-options second-edit">
+                                            <select id="SelectBoxCommodities" class="second-edit ignore" ng-model="query.commodityCodes"
+                                                    multiple="multiple"
+                                                    data-ng-options="item.id as item.name for item in commodoties"
+                                                    required></select>
+                                        </div>
+                                        <div class="check-here">
+                                            <div class="custommer">
+                                                <input type="checkbox" id="onlyWildCaughtCheckBox" data-ng-model="onlyWildCaught" data-ng-click="filterCommodities()" />
+                                                <label for="onlyWildCaughtCheckBox">Wild Caught Commodities Only</label>
+                                            </div>
+                                        </div>
+                                        <div class="cover-text-chose">
+                                            <p class="text-chose" data-ng-repeat="item in query.commodityCodes" title="{{vm.getCommodityById(item).name.trim()}}">
+                                                {{vm.getCommodityById(item).name.trim()}}
+                                                <a class="icons ignore" href="javascript:;"></a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Importer(s) -->
+                                <div class="group query-reporter-country">
+                                    <div class="tool-left">
+                                        <a href="javascript:;" class="text">Importer(s)</a>
+                                    </div>
+                                    <div class="right-input when-choise">
+                                        <div class="drop-full multi-line-options fix-left">
+                                            <select id="SelectBoxReporter" class="ignore" ng-model="query.importerCountryCodes"
+                                                    multiple="multiple" data-placeholder="Select"
+                                                    data-ng-options="item.code as item.fullName for item in countries"
+                                                    required></select>
+                                        </div>
+                                        <div class="cover-text-chose">
+                                            <p class="text-chose" data-ng-repeat="item in query.importerCountryCodes" title="{{vm.getCountryByCode(item).fullName}}">
+                                                {{vm.getCountryByCode(item).fullName}}
+                                                <a class="icons ignore" href="javascript:;"></a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Exporter(s) -->
+                                <div class="group query-partner-country">
+                                    <div class="tool-left">
+                                        <a href="javascript:;" class="text">Exporter(s)</a>
+                                    </div>
+                                    <div class="right-input when-choise">
+                                        <div class="drop-full extended-left-width multi-line-options fix-left">
+                                            <select id="SelectBoxPartner" class="ignore" ng-model="query.exporterCountryCodes"
+                                                    multiple="multiple" data-placeholder="Select"
+                                                    data-ng-options="item.code as item.fullName for item in countries"
+                                                    required></select>
+                                        </div>
+                                        <div class="cover-text-chose">
+                                            <p class="text-chose" data-ng-repeat="item in query.exporterCountryCodes" title="{{vm.getCountryByCode(item).fullName}}">
+                                                {{vm.getCountryByCode(item).fullName}}
+                                                <a class="icons ignore" href="javascript:;"></a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Display Trade By -->
+                                <div class="group tow">
+                                    <div class="tool-left">
+                                        <a href="javascript:;" class="text">Display Trade By</a>
+                                    </div>
+                                    <div class="right-input">
+                                        <div class="check-here">
+                                            <div class="custommer">
+                                                <input type="radio" id="radio0111" name="radio1212" data-ng-model="query.tradeBy" value="volume" />
+                                                <label for="radio0111"><span></span>Volume</label>
+                                            </div>
+                                            <div class="custommer">
+                                                <input type="radio" id="radio02222" name="radio1212" data-ng-model="query.tradeBy" value="value" />
+                                                <label for="radio02222"><span></span>Value</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clear"></div>
+                                <div class="bottom-btn">
+                                    <a href="javascript:;" class="reset">Reset</a>
+                                    <a data-ng-click="vm.search()" class="reset clone">Apply</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Notification  -->
+                        <div class="notificate right-keyfinding-content key">
+                            <div class="head">
+                                <p class="title">Key Findings</p>
+                                <div class="tool">
+                                    <a class="hide-unless" href="javascript:;">Hide</a>
+                                    <a class="hide-unless clone" href="javascript:;">Expand</a>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="body">
+                                <div data-ng-repeat="item in keyFindings" class="items">
+                                    <p class="title">
+                                        <span>{{item.title}}</span>
+                                    </p>
+                                    <p class="text-detail">
+                                        <span class="title">Total</span>
+                                        <span>{{item.totalWeight | number:0}} kg <i>|</i>{{item.totalValue | currency}}</span>
+                                    </p>
+                                    <p class="text-detail">
+                                        <span class="title">Average</span>
+                                        <span>{{item.averageWeight | number:2}} kg <i>|</i>{{item.averageValue | currency}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Key  -->
+                    </div>
+                    <!-- Body Left -->
+                </div>
+            </div>
+        </div>
+        <!-- End Body Page -->
+        <div class="clear"></div>
+        <app-footer></app-footer>
+    </div>
+
+    <!-- Popups -->
+    <message show-message="vm.showMessage" message-title="vm.messageTitle" message-text="vm.messageText"></message>
+
+    <div class="over-lay hide"></div>
+    <!-- Dark Overlay -->
+    <div class="setting-dash hide share-pop">
+        <div class="title">
+            <p>
+                Publish to Forum
+            </p>
+        </div>
+        <div class="main-popup">
+            <div class="cover-all">
+                <div class="group-input">
+                    <p class="lable">
+                        Title
+                    </p>
+                    <div class="drop-down-here" data-ng-class="{'validation-error' : vm.post.titleInvalid && !vm.post.title}">
+                        <input type="text" placeholder="Enter post title here" class="quye" data-ng-model="vm.post.title">
+                    </div>
+                </div>
+                <span class="border"></span>
+                <br />
+                <div class="group-input">
+                    <p class="lable">
+                        Include Graphic
+                    </p>
+                    <div class="drop-down-here clear-bg">
+                        <div class="custommer">
+                            <input type="checkbox" id="test99" name="foo" data-ng-model="vm.post.includeChart" />
+                            <label for="test99">Chart</label>
+                        </div>
+                        <div class="custommer">
+                            <input type="checkbox" id="test98" name="foo" data-ng-model="vm.post.includeMap" />
+                            <label for="test98">Map</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="group-input">
+                    <p class="lable">
+                        Include Data
+                    </p>
+                    <div class="drop-down-here clear-bg">
+                        <div class="custommer">
+                            <input type="checkbox" id="cbIncludeCSV" name="foo" data-ng-model="vm.post.includeCSV" />
+                            <label for="cbIncludeCSV">CSV</label>
+                        </div>
+                    </div>
+                </div>
+                <span class="border"></span>
+                <div class="country post-tags">
+                    <p class="lable">Tags :</p>
+                    <div class="clear"></div>
+                    <p class="green-box" data-ng-repeat="tag in vm.post.tags">
+                        {{tag}}
+                        <a href="javascript:;" class="icons unless" data-ng-click="vm.removePostTag(tag)"></a>
+                    </p>
+                </div>
+                <div class="clear"></div>
+                <span class="border"></span>
+                <br />
+                <div class="group-input">
+                    <p class="lable">
+                        Initial Comment
+                    </p>
+                    <div class="drop-down-here" data-ng-class="{'validation-error' : vm.post.descrpitionInvalid && !vm.post.description}">
+                        <textarea rows="4" cols="10" placeholder="Enter post details here" data-ng-model="vm.post.description"></textarea>
+                    </div>
+                </div>
+                <span class="border"></span>
+                <br />
+                <br />
+
+                <div class="btn-bottom">
+                    <a href="javascript:;" class="cancel">Cancel</a>
+                    <a href="javascript:;" class="save" data-ng-click="vm.publishToForum()">Publish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- share-popup -->
+    <div class="setting-dash hide save-query">
+        <div class="title">
+            <p>
+                Save Query
+            </p>
+        </div>
+        <div class="main-popup">
+            <div class="cover-all">
+                <div class="group-input">
+                    <p class="lable">
+                        Save Query as
+                    </p>
+                    <div class="drop-down-here input">
+                        <input type="text" placeholder="Enter" data-ng-model="query.name" />
+                    </div>
+                    <a href="javascript:;" class="sub icons"></a>
+                </div>
+                <span class="border"></span>
+                <div class="btn-bottom">
+                    <a href="javascript:;" class="cancel">Cancel</a>
+                    <a href="javascript:;" class="save" data-ng-click="vm.save()">Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

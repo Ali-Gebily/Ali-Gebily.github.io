@@ -1,0 +1,143 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Application navigation -->
+        <app-nav>Register</app-nav>
+        <!-- Body Page -->
+        <div class="main-container">
+            <div class="reg-acc fix-footer">
+                <div class="over-too">
+                    <div class="cover-all">
+                        <div class="title">
+                            <p class="text">Register</p>
+                        </div>
+                        <div class="main-input">
+                            <form name="myForm">
+                                <div class="group">
+                                    <p class="title-input">
+                                        ACCOUNT INFORMATION
+                                    </p>
+                                    <div class="cover-input">
+                                        <p class="label-input">Username</p>
+                                        <input name="username" ng-model="vm.user.username" class="input" type="text" placeholder="Username" required maxlength="40" />
+                                        <div ng-messages="vm.scope.myForm.username.$error" ng-if="vm.scope.myForm.username.$dirty">
+                                            <p class="validation-label" ng-message="required">Username is required.</p>
+                                        </div>
+                                    </div>
+                                    <!-- Use Name -->
+                                    <div class="cover-input">
+                                        <p class="label-input">Password</p>
+                                        <input name="password" ng-model="vm.user.password" class="input" type="password" placeholder="Password" required minlength="6" maxlength="20" />
+                                        <div ng-messages="vm.scope.myForm.password.$error" ng-if="vm.scope.myForm.password.$dirty">
+                                            <p class="validation-label" ng-message="required">Password is required.</p>
+                                            <p class="validation-label" ng-message="minlength">Password should be at least 6 characters long.</p>
+                                        </div>
+                                    </div>
+                                    <!-- PassWord -->
+                                    <div class="cover-input">
+                                        <p class="label-input">Confirm Password</p>
+                                        <input name="confirmPassword" ng-model="vm.user.confirmPassword" class="input" type="password" placeholder="Confirm Password" required confirm-password-validation maxlength="20" />
+                                        <div ng-messages="vm.scope.myForm.confirmPassword.$error" ng-if="vm.scope.myForm.confirmPassword.$dirty">
+                                            <p class="validation-label" ng-message="required">Confirm Password is required.</p>
+                                            <p class="validation-label" ng-message="passwordMismatch">Password doesn't match confirm password.</p>
+                                        </div>
+                                    </div>
+                                    <!-- Confirm PassWord -->
+                                </div>
+                                <!--  Group One -->
+
+                                <div class="group clone">
+                                    <p class="title-input">
+                                        CONTACT INFORMATION
+                                    </p>
+                                    <div class="cover-input">
+                                        <p class="label-input">Name</p>
+                                        <input name="firstName" ng-model="vm.user.firstName" class="input-small" type="text" placeholder="First Name" maxlength="60" required />
+                                        <input name="lastName" ng-model="vm.user.lastName" class="input-small" type="text" placeholder="Last Name" maxlength="60" required />
+                                        <div ng-messages="vm.scope.myForm.firstName.$error" ng-if="vm.scope.myForm.firstName.$dirty">
+                                            <p class="validation-label" ng-message="required">First Name is required.</p>
+                                        </div>
+                                        <div ng-messages="vm.scope.myForm.lastName.$error" ng-if="vm.scope.myForm.lastName.$dirty">
+                                            <p class="validation-label" ng-message="required">Last Name is required.</p>
+                                        </div>
+                                    </div>
+                                    <!-- User Name -->
+                                    <div class="cover-input">
+                                        <p class="label-input">Organization</p>
+                                        <input ng-model="vm.user.organization" class="input" type="text" placeholder="Organization" maxlength="40" />
+                                    </div>
+                                    <!-- State -->
+                                    <div class="cover-input">
+                                        <p class="label-input">Country</p>
+                                        <div class="small-drop-down-here hide-text">
+                                            <select name="country" ng-model="vm.user.countryId" placeholder="Country"
+                                                    ng-options="country.id as country.name for country in vm.countries"
+                                                    ng-selected="1" class="dropdown-show wide" required></select>
+                                        </div>
+                                        <div ng-messages="vm.scope.myForm.country.$error" ng-if="vm.scope.myForm.country.$dirty">
+                                            <p class="validation-label" ng-message="required">Country is required.</p>
+                                        </div>
+                                    </div>
+                                    <!-- State -->
+                                    <div class="cover-input">
+                                        <p class="label-input">Phone</p>
+                                        <input ng-model="vm.user.phone" class="input" type="tel" placeholder="Phone" maxlength="20" />
+                                    </div>
+                                    <!-- Phone -->
+                                    <div class="cover-input">
+                                        <p class="label-input">Email</p>
+                                        <input ng-hide="viewMode" name="email" ng-model="vm.user.email" class="input" type="email" placeholder="Email" maxlength="255" required />
+                                        <div ng-messages="vm.scope.myForm.email.$error" ng-if="vm.scope.myForm.email.$dirty">
+                                            <p class="validation-label" ng-message="required">Email is required.</p>
+                                            <p class="validation-label" ng-message="email">Enter a valid email address.</p>
+                                        </div>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="cover-input">
+                                        <p class="label-input">Twitter</p>
+                                        <input ng-model="vm.user.twitter" class="input" type="text" placeholder="Twitter" maxlength="30" />
+                                    </div>
+                                    <!-- Twitter -->
+                                </div>
+                                <!--  Group Two -->
+                                <div class="text-bottom">
+                                    <p class="detail">
+                                        By clicking Register, you agree to our <a href="javascript:;">Terms of Use</a> and <a href="javascript:;">Privacy Policy</a>
+                                    </p>
+                                </div>
+                                <a href="javascript:;" ng-click="vm.register()" class="btn-reg">Register</a>
+                                <div class="clear"></div>
+                                <div class="external-login">
+                                    <p class="login-with">
+                                        OR LOGIN WITH
+                                    </p>
+                                    <div class="social">
+                                        <a href="javascript:;" class="face icons" ng-click="vm.externalLogin('Facebook')" data-enter-key="vm.externalLogin('Facebook')" tabindex="5"></a>
+                                        <a href="javascript:;" class="twin icons" ng-click="vm.externalLogin('Twitter')" data-enter-key="vm.externalLogin('Twitter')" tabindex="6"></a>
+                                        <a href="javascript:;" class="google icons" ng-click="vm.externalLogin('Google')" data-enter-key="vm.externalLogin('Google')" tabindex="7"></a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-footer gradien">
+                    <div class="cover">
+                        <p class="title">
+                            Do you already have an account ?
+                        </p>
+                        <div class="clear"></div>
+                        <a href="javascript:;" class="login-btn login-btn-register" ng-click="vm.login()">Login</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Reg Page -->
+        </div>
+        <!-- End Body Page -->
+        <!-- End Body Page -->
+        <app-footer></app-footer>
+    </div>
+
+    <!-- Popups -->
+    <message show-message="vm.showMessage" message-title="vm.messageTitle" message-text="vm.messageText"></message>
+</div>

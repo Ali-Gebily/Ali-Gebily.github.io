@@ -1,0 +1,63 @@
+<div class="container-fluid" data-jquery-augmentation>
+    <div class="row">
+        <app-nav menu-item="resources">Resources</app-nav>
+        <!-- Body Page -->
+        <div class="main-container">
+            <div class="dash-page compair">
+                <div class="body-dash">
+                    <div class="cover-left full">
+                        <div class="group-left">
+                            <div class="head">
+                                <p class="heading">
+                                    {{ vm.casestudyData.fields.title }}
+                                </p>
+                                <div class="right-btn">
+                                    <a href="javascript:;" class="print extra-margin-right">
+                                        <i class="icons"></i>
+                                    </a>
+                                    <a href="javascript:;" class="share no-border">
+                                        <i class="icons"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- HEADING -->
+                            <div class="name-query">
+                                <div class="head-name">
+                                    <p class="case-details">
+                                        Created by
+                                        <span class="author">
+                                            <span class="profile-img">
+                                                <img src="images/i/01-who.jpg" alt="Profile picture">
+                                            </span>
+                                            John Doe
+                                        </span>
+                                        Date created on
+                                        <span class="created">{{ vm.getDisplayDate(vm.casestudyData.fields.postDate) }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Name Query  -->
+                            <div class="main-import">
+                                <!-- Import -->
+                                <div class="cover-main">
+                                    <div class="list-view case-studies">
+                                        <div class="case-study-img">
+                                            <img data-ng-src="{{ vm.imgData.fields.file.url }}" alt="{{ vm.imgData.fields.title }}">
+                                        </div>
+                                        <div class="case-study-body">
+                                            <p>{{ vm.casestudyData.fields.content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Group One -->
+                    </div>
+                    <!-- Body Left -->
+                </div>
+            </div>
+        </div>
+        <!-- Body Page -->
+        <app-footer></app-footer>
+    </div>
+</div>

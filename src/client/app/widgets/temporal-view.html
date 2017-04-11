@@ -1,0 +1,37 @@
+<div class="year-tag">
+  <div class="left-bar">
+    <div class="cover">
+      <a data-ng-class="isMonthlyView ? 'active tab-monthly line-tab' : 'tab-monthly line-tab'" data-ng-click="makeMonthlyView()">Monthly</a>
+      <a data-ng-class="isMonthlyView ? 'tab-anual line-tab' : 'active tab-anual line-tab'" data-ng-click="makeYearlyView()">Annual</a>
+    </div>
+  </div>
+  <div class="year-main">
+    <div class="month" data-ng-show="isMonthlyView">
+      <a href="javascript:;">Jan</a>
+      <a class="active" href="javascript:;">Feb</a>
+      <a href="javascript:;">Mar</a>
+      <a href="javascript:;">Apr</a>
+      <a href="javascript:;">May</a>
+      <a href="javascript:;">Jun</a>
+      <a href="javascript:;">Jul</a>
+      <a href="javascript:;">Aug</a>
+      <a href="javascript:;">Sep</a>
+      <a href="javascript:;">Oct</a>
+      <a href="javascript:;">Nov</a>
+      <a href="javascript:;">Dec</a>
+      <a href="javascript:;">‘16</a>
+    </div>
+    <div class="year" data-ng-hide="isMonthlyView">
+      <a  href="javascript:;">2007</a>
+      <a href="javascript:;">2008</a>
+      <a href="javascript:;">2009</a>
+      <a href="javascript:;">2010</a>
+      <a href="javascript:;">2011</a>
+      <a href="javascript:;">2012</a>
+      <a href="javascript:;">2013</a>
+      <a href="javascript:;">2014</a>
+      <a href="javascript:;">2015</a>
+      <a class="active" href="javascript:;">2016</a>
+    </div>
+  </div>
+</div>

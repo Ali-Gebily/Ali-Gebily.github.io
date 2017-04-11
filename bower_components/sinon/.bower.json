@@ -1,0 +1,11 @@
+{
+  "name": "sinon",
+  "_cacheHeaders": {
+    "Content-Length": "803",
+    "Content-Type": "text/html"
+  },
+  "main": "index.js",
+  "_source": "http://sinonjs.org/releases/sinon-1.12.1.js",
+  "_target": "*",
+  "_originalSource": "http://sinonjs.org/releases/sinon-1.12.1.js"
+}

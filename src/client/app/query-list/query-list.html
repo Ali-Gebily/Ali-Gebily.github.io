@@ -1,0 +1,115 @@
+<div class="container-fluid">
+    <div class="row">
+        <app-nav menu-item="queryList">Query List</app-nav>
+        <!-- Body Page -->
+        <div class="main-container">
+            <div class="query-page">
+                <div class="cover-all">
+                    <div class="head">
+                        <p class="text">
+                            Query List
+                        </p>
+                    </div>
+                    <div class="list-style">
+                        <div class="cover-main">
+                            <p class="display">
+                                Displaying {{displayFromIndex}} - {{displayToIndex}} of {{vm.totalItems}} Queries
+                            </p>
+                            <div class="filter" data-ng-class="{'active': $scope.showFilterPanel}">
+                                <a href="javascript:;" class="btn-filter" data-ng-hide="$scope.showFilterPanel" data-ng-click="$scope.showFilterPanel = true" >Filter</a>
+                                <a href="javascript:;" class="btn-hide" data-ng-show="$scope.showFilterPanel" data-ng-click="$scope.showFilterPanel = false">Hide</a>
+                                <div class="clear"></div>
+                                <div class="when-filter" data-ng-show="$scope.showFilterPanel">
+                                    <div class="cover-all">
+                                        <div class="group">
+                                            <p class="label-input">Query Name</p>
+                                            <input type="text" placeholder="Enter" data-ng-model="criteria.queryName">
+                                        </div>
+                                        <div class="group">
+                                            <p class="label-input">Importer</p>
+                                            <div class="sumo-dropdown-full">
+                                                <select id="SelectBoxImporterCountry" class="ignore" ng-model="criteria.importerCountryCode"
+                                                        single="single" data-placeholder="Select"
+                                                        data-ng-options="item.code as item.fullName for item in countries"
+                                                        required></select>
+                                            </div>
+                                        </div>
+                                        <div class="group date">
+                                            <p class="label-input">Created on</p>
+                                            <input type="text" id="createdOnCriteria" data-ng-model="criteria.createdOn" placeholder="mm/dd/yyyy">
+                                        </div>
+                                        <div class="group date">
+                                            <p class="label-input">Last Update on</p>
+                                            <input type="text" id="lastUpdatedOnCriteria" data-ng-model="criteria.lastUpdatedOn" placeholder="mm/dd/yyyy">
+                                        </div>
+                                        <a data-ng-click="vm.search()" class="btn-filter clone">Filter</a>
+                                        <a data-ng-click="vm.clearFields()" class="btn-filter clone clear-filter">Clear</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="list-view content-tab-my-query">
+                                <div class="container-tab-my-query">
+                                    <div data-ng-repeat="group in groupedQueries" class="queryGroup">
+                                        <div data-ng-repeat="item in group" class="items">
+                                            <div class="over-hover">
+                                                <div class="over-icon">
+                                                    <div class="over-center multi-icon">
+                                                        <a href="javascript:;" class="pub icons" data-ng-click="vm.delete(item)"></a>
+                                                        <a href="javascript:;" class="pen icons" data-ng-click="vm.edit(item)"></a>
+                                                        <a href="javascript:;" class="eye icons" data-ng-click="vm.view(item)"></a>
+                                                    </div>
+                                                </div>
+                                                <p class="title">
+                                                    {{item.name}}
+                                                </p>
+                                                <div class="chart-here">
+                                                    <div class="group-bar line-chart line-chart-new preview-chart" id="myQueryChart{{item.id}}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="infor">
+                                                <ul>
+                                                    <li>
+                                                        <p class="text">Importer(s)</p><p class="text-clone green">
+                                                            {{item.importerCountryNames}}
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p class="text">Exporter(s)</p><p class="text-clone">
+                                                            {{item.exporterCountryNames}}
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p class="text">Commodities</p><p class="text-clone green">
+                                                            {{item.commodityNames}}
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p class="text">Created On</p><p class="text-clone">
+                                                            {{item.createdOn | date:'medium'}}
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p class="text">Last Update On</p><p class="text-clone">
+                                                            {{item.lastUpdatedOn | date:'medium'}}
+                                                        </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="custom-pagination-container">
+                                    <custom-pagination current-page="vm.currentPage" total-items="{{ vm.totalItems }}" show-ellipsis="{{ true }}" on-change-page="changePage"></custom-pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Body Page -->
+        <app-footer></app-footer>
+    </div>
+</div>

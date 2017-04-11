@@ -1,0 +1,67 @@
+<!-- Header -->
+<header>
+    <div class="cover-header">
+        <div class="logo">
+            <a ui-sref="home" ui-sref-active="active" class="bear">
+            </a>
+            <h2>Detect IT: Fish</h2>
+        </div>
+        <!-- Logo -->
+        <nav class="navigate">
+            <ul class="list">
+                <li ng-class="{active: vm.menuItem==='dashboard'}">
+                    <a ui-sref="dashboard">
+                        Dashboard
+                    </a>
+                </li>
+                <li ng-class="{active: vm.menuItem==='searchData'}">
+                    <a ui-sref="searchdata">
+                        Search Data
+                    </a>
+                </li>
+                <li ng-class="{active: vm.menuItem==='searchAlerts'}">
+                    <a ui-sref="alertsearch" ui-sref-active="active">
+                        Search Alerts
+                    </a>
+                </li>
+                <li ng-class="{active: vm.menuItem==='queryList'}">
+                    <a ui-sref="querylist" ui-sref-active="active">
+                        Query List
+                    </a>
+                </li>
+                <li ng-class="{active: vm.menuItem==='resources'}">
+                    <a ui-sref="casestudies">
+                        Resources
+                    </a>
+                </li>
+                <li ng-class="{active: vm.menuItem==='tipsAndPractices'}">
+                    <a ui-sref="tips">
+                        Tips &amp; Best Practices
+                    </a>
+                </li>
+                <li ng-class="{active: vm.menuItem==='forum'}">
+                    <a ui-sref="forum({page:1, size:5})" class='forum'>
+                        Forum
+                    </a>
+                </li>
+
+                <li ng-class="{active: vm.menuItem==='speciesDatabase'}">
+                    <a ui-sref="speciesdatabase">
+                        Species Data Base
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- Navigate -->
+        <data-user-panel />
+    </div>
+    <div class="under-header">
+        <p class="name-page">
+            <ng-transclude>
+                Unknown page
+            </ng-transclude>
+        </p>
+    </div>
+</header>
+<!-- End Header -->

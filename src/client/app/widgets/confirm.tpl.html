@@ -1,0 +1,20 @@
+﻿<div class="over-lay" data-ng-class="{ show: !!vm.showConfirm }" data-ng-click="vm.showConfirm = !vm.showConfirm"></div>
+<!-- Dark Overlay -->
+<div class="setting-dash auto-height" data-ng-class="{ hide: !vm.showConfirm }">
+    <div class="title">
+        <p>
+            Confirmation
+        </p>
+    </div>
+    <div class="main-popup">
+        <div class="cover-all">
+            <div class="country">
+                <p class="lable confirmation">Are you sure?</p>
+            </div>
+            <div class="btn-bottom">
+                <a data-ng-click="vm.showConfirm = false" class="cancel">Cancel</a>
+                <a class="save" data-ng-click="vm.delete()">OK</a>
+            </div>
+        </div>
+    </div>
+</div>

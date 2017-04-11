@@ -1,0 +1,189 @@
+<div class="container-fluid" data-jquery-augmentation>
+    <div class="row">
+        <app-nav menu-item="forum">
+            <a href="javascript:;" data-ng-click="vm.back()">Forum</a> <span>></span>  <i>Post Details</i>
+        </app-nav>
+        <!-- Body Page -->
+        <div class="main-container forum-detail" id="{{vm.post.sys.id}}">
+            <div class="dash-page compair">
+                <div class="body-dash">
+                    <div class="cover-left">
+                        <div class="group-left">
+                            <div class="head">
+                                <p class="heading">
+                                    {{vm.post.fields.title}}
+                                </p>
+                                <div class="edit-links">
+                                    <a data-ng-show="user.username == vm.post.fields.author" ng-href="/forumcreatepost/{{ vm.post.sys.id}}">Edit</a>
+                                    <span data-ng-show="user.username == vm.post.fields.author && user.isAdmin">|</span>
+                                    <a data-ng-show="user.isAdmin" data-ng-click="vm.showConfirmPost=true;">Delete</a>
+                                </div>
+                                <div class="right-more">
+                                    <a href="javascript:;" class="save clone">Refresh</a>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <!-- HEADING -->
+                            <div class="main-import">
+                                <div class="cover-grid">
+                                    <div class="cover-main">
+                                        <div class="user-profile">
+                                            <div class="user-profile-inner">
+                                                <div class="user-card">
+                                                    <div class="img">
+                                                        <img src="{{vm.authorAvatar}}">
+                                                    </div>
+                                                    <div class="group-text">
+                                                        <p>Author </p>
+                                                        <p class="secondary"><a ng-href="/publicprofile/{{ vm.post.fields.author }}">{{vm.post.fields.author}}</a></p>
+                                                    </div>
+                                                </div>
+                                                <div class="body-user-profile" data-ng-show="vm.showingProfile">
+                                                    <p>
+                                                        <span class="title">Created on</span>
+                                                        <span class="text"> {{vm.post.sys.createdAt | date:"MM-dd-yyyy 'at' HH:mm a"}}</span>
+                                                    </p>
+                                                    <p>
+                                                        <span class="title">Last Update by</span>
+                                                        <span class="text"> {{vm.post.fields.author}}</span>
+                                                    </p>
+                                                    <p>
+                                                        <span class="title">Last Update on</span>
+                                                        <span class="text"> {{vm.post.sys.updatedAt | date:"MM-dd-yyyy 'at' HH:mm a"}}</span>
+                                                    </p>
+                                                </div>
+                                                <a data-ng-click="vm.showingProfile = !vm.showingProfile" data-ng-show="vm.showingProfile" class="show less">Show Less</a>
+                                                <a data-ng-click="vm.showingProfile = !vm.showingProfile" data-ng-show="!vm.showingProfile" class="show more">Show More</a>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <!-- User Profile -->
+                                        <div class="forum-post-body">
+                                            <p>{{vm.post.fields.description}}</p>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <div>
+                                            <img class="post-image" data-ng-hide="!vm.graphic" data-ng-src="{{ vm.graphic.fields.file.url }}" alt="Graphic">
+                                        </div>
+                                        <div>
+                                            <img class="post-image" data-ng-hide="!vm.map" data-ng-src="{{ vm.map.fields.file.url }}" alt="Map">
+                                        </div>
+                                        <div class="clear"></div>
+                                        <div class="forum-post-body" ng-show="vm.post.fields.attachments">
+                                            <p>Attachments</p>
+                                            <ul class="forum-comment">
+                                                <li class="link" data-ng-repeat="attachment in vm.post.fields.attachments">
+                                                    <a data-ng-href="{{attachment.file.url}}">{{attachment.file.fileName}}</a>
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <!-- Name Query  -->
+                                        <div class="main-import">
+
+                                            <div class="cover-import summary-tab tab-content-comparison">
+                                                <div class="cover-tags">
+                                                    <p data-ng-repeat="tag in vm.post.fields.tags" class="green-box">{{vm.trimTag(tag)}}</p>
+                                                </div>
+                                                <div class="cover-comment">
+                                                    <div data-ng-show="user.isLoggedIn" class="comment">
+                                                        <div class="group-input">
+                                                            <a href="javascript:;" class="person">
+                                                                <img src="images/i/small-new.jpg" ng-src="{{user.photo}}" title="{{user.username}}">
+                                                            </a>
+                                                            <input type="text" placeholder="Reply.." ng-model="vm.newComment" />
+                                                        </div>
+                                                        <div class="btn-bottom">
+                                                            <div class="check-box" ng-show="false">
+                                                                <input type="checkbox" id="test1" />
+                                                                <label for="test1">Notify me via email</label>
+                                                            </div>
+                                                            <a href="javascript:;" class="send" ng-click="vm.createComment()">Send</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                    <div class="forum-list-comment">
+                                                        <ul class="forum-comment">
+                                                            <li data-ng-repeat="cm in vm.comments">
+                                                                <div class="comment-head" id="{{cm.sys.id}}">
+                                                                    <p>
+                                                                        Re: {{ vm.post.fields.title}} (response to <a href="#{{cm.parentId}}">post</a> by <a data-ng-href="/publicprofile/{{ cm.parentAuthor}}">{{ cm.parentAuthor}}</a>)
+                                                                        <a data-ng-show="user.isLoggedIn && user.username === cm.fields.author" data-ng-click="cm.edit =!cm.edit">| Edit</a> |
+                                                                        <a data-ng-show="user.isAdmin" data-ng-click="vm.showConfirm=true;vm.commentToDelete=cm;">| Delete</a>
+                                                                        <span class="when">{{ cm.when }}</span>
+                                                                        <span class="index">#{{ $index + 1 }}</span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="comment-body">
+                                                                    <div class="person">
+                                                                        <img data-ng-src="{{ cm.avatar }}" alt="Profile picture">
+                                                                        <a ng-href="/publicprofile/{{ cm.fields.author}}"><span class="name">{{ cm.fields.author }}</span></a>
+                                                                    </div>
+                                                                    <div class="comment-text" data-ng-show="!cm.edit">
+                                                                        <p>{{ cm.fields.comment }}</p>
+                                                                        <div class="comment-info" data-ng-hide="!!reply || !user.isLoggedIn">
+                                                                            <a data-ng-click="reply=!reply">Reply</a> <span data-ng-show="{{ cm.fields.comments }}"> {{ cm.fields.comments.length }}</span>
+                                                                        </div>
+                                                                        <div class="comment" data-ng-hide="!reply || !user.isLoggedIn">
+                                                                            <div class="group-input">
+                                                                                <input type="text" placeholder="Reply.." ng-model="cm.newComment" />
+                                                                            </div>
+                                                                            <div class="btn-bottom">
+                                                                                <a href="javascript:;" class="send left" ng-click="vm.createNestedComment(cm);reply=!reply">Send</a>
+                                                                                <a href="javascript:;" class="send" ng-click="reply=!reply">Cancel</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="comment-text" data-ng-show="cm.edit && user.isLoggedIn">
+                                                                        <div class="comment">
+                                                                            <div class="group-input">
+                                                                                <input type="text" placeholder="Reply.." ng-model="cm.fields.comment" />
+                                                                            </div>
+                                                                            <div class="btn-bottom">
+                                                                                <a href="javascript:;" class="send left" ng-click="vm.updateComment(cm)">Save</a>
+                                                                                <a href="javascript:;" class="send" ng-click="cm.edit=!cm.edit">Cancel</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Import -->
+                                        </div>
+                                        <!-- Chart section -->
+                                        <div class="clear"></div>
+                                        <div class="list-view forum-post-footer">
+                                            <div class="">
+                                                <!-- <div class="cover-item-new"> -->
+                                            </div>
+                                            <div class="clear"></div>
+                                            <!--<div class="custom-pagination-container">
+                                              <custom-pagination current-page="vm.currentPage" total-items="{{ vm.totalItems }}" show-ellipsis="{{ false }}"></custom-pagination>
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Group One -->
+                    </div>
+                    <!-- Body Left -->
+
+                    <div class="cover-right">
+                        <hot-topics></hot-topics>
+                        <latest-posts></latest-posts>
+                    </div>
+                    <!-- Body Right -->
+
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+    <confirm on-delete="vm.deleteComment" show-confirm="vm.showConfirm"></confirm>
+    <confirm on-delete="vm.deletePost" show-confirm="vm.showConfirmPost"></confirm>
+</div>

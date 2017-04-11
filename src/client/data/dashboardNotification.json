@@ -1,0 +1,35 @@
+[
+	{
+		"imageIcon":"images/i/wifi.png",
+		"description":"Trade discrepancy for Talapia exported from India to China in May 2016 has increased to 30%",
+		"date":"2 minutes ago",
+    "species": "Talapia",
+    "period": "May 2016",
+    "tradeFlow": "To",
+    "reportingCountry": "China",
+    "partCountry": "India",
+    "classType": "General Only"
+	},
+	{
+		"imageIcon":"images/i/letter.png",
+		"description":"Trade discrepancy for Cat fish exported from Mexico to the USA in June 2016 has increased to 30%.",
+		"date":"Yesterday at 10:00 AM",
+    "species": "Cat fish",
+    "period": "June 2016",
+    "tradeFlow": "To",
+    "reportingCountry": "USA",
+    "partCountry": "Mexico",
+    "classType": "Important Only"
+	},
+	{
+		"imageIcon":"images/i/wifi.png",
+		"description":"Trade discrepancy for Rock Lobster exported from Sweden to France in July 2016 has increased to 30%",
+		"date":"06/03/2016 at 10:00 AM",
+    "species": "Lobster",
+    "period": "July 2016",
+    "tradeFlow": "To",
+    "reportingCountry": "France",
+    "partCountry": "Sweden",
+    "classType": "Important Only"
+	}
+]

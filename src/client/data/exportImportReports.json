@@ -1,0 +1,335 @@
+{
+
+  "Venezuela": {
+    "year2005": {
+      "volume": 105450,
+      "value": 34900
+    },
+    "year2006": {
+
+      "volume": 9900,
+      "value": 89000
+    },
+    "year2007": {
+      "volume": 98000,
+      "value": 988002
+    },
+    "year2008": {
+      "volume": 867899,
+      "value": 854459
+    },
+    "year2009": {
+
+      "volume": 985623,
+      "value": 9867322
+    },
+    "year2010": {
+      "volume": 985643,
+      "value": 9864768
+    },
+    "year2011": {
+      "volume": 9856439,
+      "value": 93847689
+    },
+    "year2012": {
+
+      "volume": 9358439,
+      "value": 93687689
+    },
+    "year2013": {
+
+      "volume": 9358843,
+      "value": 88647689
+    },
+    "year2014": {
+      "volume": 988643,
+      "value": 9364768
+    },
+    "year2015": {
+      "volume": 888439,
+      "value": 38947689
+    },
+    "year2016": {
+
+      "volume": 8905679,
+      "value": 59076366
+    }
+  },
+  "Germany": {
+    "year2005": {
+      "volume": 23,
+      "value": 34900
+    },
+    "year2006": {
+
+      "volume": 232332,
+      "value": 3232
+    },
+    "year2007": {
+      "volume": 2332,
+      "value": 988002
+    },
+    "year2008": {
+      "volume": 867899,
+      "value": 2424
+    },
+    "year2009": {
+
+      "volume": 2323,
+      "value": 35466
+    },
+    "year2010": {
+      "volume": 456,
+      "value": 4545
+    },
+    "year2011": {
+      "volume": 4545,
+      "value": 567678
+    },
+    "year2012": {
+
+      "volume": 3435,
+      "value": 3456
+    },
+    "year2013": {
+
+      "volume": 3434,
+      "value": 34546
+    },
+    "year2014": {
+      "volume": 5656,
+      "value": 5676876
+    },
+    "year2015": {
+      "volume": 3434,
+      "value": 890876
+    },
+    "year2016": {
+
+      "volume": 4545,
+      "value": 90754
+    }
+  },
+  "Japan": {
+    "year2005": {
+      "volume": 23,
+      "value": 34900
+    },
+    "year2006": {
+
+      "volume": 232332,
+      "value": 3232
+    },
+    "year2007": {
+      "volume": 2332,
+      "value": 988002
+    },
+    "year2008": {
+      "volume": 867899,
+      "value": 2424
+    },
+    "year2009": {
+
+      "volume": 2323,
+      "value": 35466
+    },
+    "year2010": {
+      "volume": 456,
+      "value": 4545
+    },
+    "year2011": {
+      "volume": 4545,
+      "value": 567678
+    },
+    "year2012": {
+
+      "volume": 3435,
+      "value": 3456
+    },
+    "year2013": {
+
+      "volume": 3434,
+      "value": 34546
+    },
+    "year2014": {
+      "volume": 5656,
+      "value": 5676876
+    },
+    "year2015": {
+      "volume": 3434,
+      "value": 890876
+    },
+    "year2016": {
+
+      "volume": 4545,
+      "value": 90754
+    }
+  },
+  "Colombia": {
+    "year2005": {
+      "volume": 656,
+      "value": 656356
+    },
+    "year2006": {
+
+      "volume": 6774,
+      "value": 595789
+    },
+    "year2007": {
+      "volume": 2346,
+      "value": 96060
+    },
+    "year2008": {
+      "volume": 859,
+      "value": 99678
+    },
+    "year2009": {
+
+      "volume": 4536,
+      "value": 7869
+    },
+    "year2010": {
+      "volume": 4536,
+      "value": 8989
+    },
+    "year2011": {
+      "volume": 567,
+      "value": 69060
+    },
+    "year2012": {
+
+      "volume": 9869,
+      "value": 6969
+    },
+    "year2013": {
+
+      "volume": 6989,
+      "value": 689603
+    },
+    "year2014": {
+      "volume": 768,
+      "value": 768467
+    },
+    "year2015": {
+      "volume": 869,
+      "value": 869987
+    },
+    "year2016": {
+
+      "volume": 696,
+      "value": 2423
+    }
+  },
+  "Indonesia": {
+  "year2005": {
+    "volume": 105450,
+    "value": 34900
+  },
+  "year2006": {
+
+    "volume": 9900,
+    "value": 89000
+  },
+  "year2007": {
+    "volume": 98000,
+    "value": 988002
+  },
+  "year2008": {
+    "volume": 867899,
+    "value": 854459
+  },
+  "year2009": {
+
+    "volume": 985623,
+    "value": 9867322
+  },
+  "year2010": {
+    "volume": 985643,
+    "value": 9864768
+  },
+  "year2011": {
+    "volume": 9856439,
+    "value": 93847689
+  },
+  "year2012": {
+
+    "volume": 9358439,
+    "value": 93687689
+  },
+  "year2013": {
+
+    "volume": 9358843,
+    "value": 88647689
+  },
+  "year2014": {
+    "volume": 988643,
+    "value": 9364768
+  },
+  "year2015": {
+    "volume": 888439,
+    "value": 38947689
+  },
+  "year2016": {
+
+    "volume": 8905679,
+    "value": 59076366
+  }
+},
+  "United_States": {
+    "year2005": {
+      "volume": 23,
+      "value": 34900
+    },
+    "year2006": {
+
+      "volume": 232332,
+      "value": 3232
+    },
+    "year2007": {
+      "volume": 2332,
+      "value": 988002
+    },
+    "year2008": {
+      "volume": 867899,
+      "value": 2424
+    },
+    "year2009": {
+
+      "volume": 2323,
+      "value": 35466
+    },
+    "year2010": {
+      "volume": 456,
+      "value": 4545
+    },
+    "year2011": {
+      "volume": 4545,
+      "value": 567678
+    },
+    "year2012": {
+
+      "volume": 3435,
+      "value": 3456
+    },
+    "year2013": {
+
+      "volume": 3434,
+      "value": 34546
+    },
+    "year2014": {
+      "volume": 5656,
+      "value": 5676876
+    },
+    "year2015": {
+      "volume": 3434,
+      "value": 890876
+    },
+    "year2016": {
+
+      "volume": 4545,
+      "value": 90754
+    }
+  }
+}
+
+

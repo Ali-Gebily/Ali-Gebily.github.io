@@ -1,0 +1,62 @@
+<div class="container-fluid">
+    <div class="row">
+        <app-nav>
+            <a href="" ui-sref="profile"><span>My Profile</span></a> <span>></span> <i>Admin Page</i>
+        </app-nav>
+        <!-- Body Page -->
+        <div class="main-container profile-page">
+            <div class="reg-acc profile">
+                <div class="over-too">
+                    <div class="cover-all">
+                        <div class="title">
+                            <p class="text admin-title">Administrator</p>
+                            <div class="right-btn">
+                                <a href="javascript:;" class="btn-edit admin"
+                                   confirm="Are you sure you want to load data from Vertica? All existing alerts will be deleted!"
+                                   confirm-ok="Yes" confirm-cancel="No" data-ng-click="vm.loadFromVertica()">Load From Vertica</a>
+                            </div>
+                        </div>
+                        <div class="main-input admin">
+                            <div class="group">
+                                <div class="cover-input">
+                                    <p class="label-input">Vertica Connection String</p>
+                                    <input class="input show" type="text" placeholder=""
+                                           data-ng-model="vm.alertConfiguration.verticaConnectionString" />
+                                </div>
+                                <div class="cover-input">
+                                    <p class="label-input">Netweight Level Percentage</p>
+                                    <input class="input show" type="text" placeholder="e.g. 50" only-digits maxlength="18"
+                                           data-ng-model="vm.alertConfiguration.netWeightLevelPercentage" />
+                                </div>
+                                <div class="cover-input">
+                                    <p class="label-input">Volume Level Percentage</p>
+                                    <input class="input show" type="text" placeholder="e.g. 100" only-digits maxlength="18"
+                                           data-ng-model="vm.alertConfiguration.volumeLevelPercentage" />
+                                </div>
+                                <div class="cover-input">
+                                    <p class="label-input">Country Code(s)</p>
+                                    <input class="input show" type="text" placeholder="comma separated, e.g. 842, 826 (leave empty for all)" value=""
+                                           data-ng-model="vm.alertConfiguration.countryCodes" />
+                                </div>
+                                <div class="cover-input">
+                                    <p class="label-input">Commodity Code(s)</p>
+                                    <input class="input show" type="text" placeholder="comma separated, e.g. 030211, 030212 (leave empty for all)" value=""
+                                           data-ng-model="vm.alertConfiguration.commodityCodes" />
+                                </div>
+                            </div>
+                            <!--  Group Two -->
+                            <div class="btn-bottom show">
+                                <a href="javascript:;" class="save" data-ng-click="vm.save()">Save</a>
+                                <a href="javascript:;" ui-sref="profile" class="cancel">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Reg Page -->
+        </div>
+        <!-- End Body Page -->
+        <!-- End Body Page -->
+        <app-footer></app-footer>
+    </div>
+</div>

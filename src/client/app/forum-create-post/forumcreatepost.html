@@ -1,0 +1,284 @@
+<div class="container-fluid">
+    <div class="row  search-query-page" data-jquery-augmentation>
+        <app-nav menu-item="forum">
+            <a href="" ui-sref="forum">Forum</a> <span>></span>  <i>Create Post</i>
+        </app-nav>
+        <!-- Body Page -->
+        <div class="main-container">
+            <div class="reg-acc search-bottom">
+                <div class="over-too">
+                    <div class="cover-all">
+                        <div class="title">
+                            <p class="text" data-ng-show="!vm.isEdit">Create New Post</p>
+                            <p class="text" data-ng-show="vm.isEdit">Edit Post</p>
+                        </div>
+                        <div class="main-search-data">
+                            <div class="cover-all-search">
+
+                                <div class="group night">
+                                    <div class="tool-left">
+                                        <p class="text ">Post title <span class="required-field">*</span></p>
+                                        <div class="hover-tool">
+                                            <a href="javascript:;" class="icons"></a>
+                                            <div class="main-tool ">
+                                                <div class="cover">
+                                                    <p class="text">
+                                                        <b>"Post title" helps info :</b>
+                                                        Lorem ipsum dolor sit amet, consec-
+                                                        tetuer adipiscing elit, sed diam nonu-
+                                                        mmy nibh euismod tincidunt ut laor-
+                                                        eet dolore magna aliquam erat.
+                                                    </p>
+                                                    <a href="javascript:;">Ask Questions</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right-input">
+                                        <div class="drop-full">
+                                            <input type="text" placeholder="Enter" class="quye" ng-model="vm.title">
+                                        </div>
+                                        <i class="fa fa-camera-retro"></i>
+                                    </div>
+                                </div>
+                                <!-- Group Night -->
+
+                                <div class="group night">
+                                    <div class="group">
+                                        <div class="tool-left">
+                                            <p class="text">Description <span class="required-field">*</span></p>
+                                            <div class="hover-tool">
+                                                <a href="javascript:;" class="icons"></a>
+                                                <div class="main-tool ">
+                                                    <div class="cover">
+                                                        <p class="text">
+                                                            <b>"Description" helps info :</b>
+                                                            Lorem ipsum dolor sit amet, consec-
+                                                            tetuer adipiscing elit, sed diam nonu-
+                                                            mmy nibh euismod tincidunt ut laor-
+                                                            eet dolore magna aliquam erat.
+                                                        </p>
+                                                        <a href="javascript:;">Ask Questions</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right-input">
+                                            <div class="drop-full">
+                                                <textarea placeholder="Description" class="quye" ng-model="vm.description" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Group Night -->
+                                    <div class="group" data-ng-show="vm.isEdit">
+                                        <div class="tool-left">
+                                            <p class="text">Existing Graphics</p>
+                                            <div class="hover-tool">
+                                                <a href="javascript:;" class="icons"></a>
+                                                <div class="main-tool ">
+                                                    <div class="cover">
+                                                        <p class="text">
+                                                            <b>Existing Graphics :</b>
+                                                            Check this item if existing chart/graphic should be deleted.
+                                                        </p>
+                                                        <a href="javascript:;">Ask Questions</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right-input">
+                                            <div class="delete-graphic">
+                                                <input type="checkbox" id="deleteExistingChart" class="regular" data-ng-model="vm.deleteExistingChart" />
+                                                <label for="deleteExistingChart">Delete Chart</label>
+                                            </div>
+                                            <div class="delete-graphic">
+                                                <input type="checkbox" id="deleteExistingMap" class="regular" data-ng-model="vm.deleteExistingMap" />
+                                                <label for="deleteExistingMap">Delete Map</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="group">
+                                        <div class="tool-left">
+                                            <p class="text ">Graphic</p>
+                                            <div class="hover-tool">
+                                                <a href="javascript:;" class="icons"></a>
+                                                <div class="main-tool ">
+                                                    <div class="cover">
+                                                        <p class="text">
+                                                            <b>Upload a chart :</b>
+                                                            The purpose of this field is to allow users to load a chart into the forum post which can be basis for discussion.
+                                                        </p>
+                                                        <a href="javascript:;">Ask Questions</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right-input">
+                                            <label class="import-file">
+                                                <input type="file" on-file-upload="selectGraphic">
+                                                <div class="text-field" data-ng-switch="vm.graphicFile != undefined">
+                                                    <div data-ng-switch-when="false" class="placeholder">No file chosen</div>
+                                                    <div data-ng-switch-when="true">{{ vm.graphicFile.name }}</div>
+                                                </div>
+                                                <div class="import-btn">Browse</div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="group">
+                                        <div class="tool-left">
+                                            <p class="text ">Attachments</p>
+                                            <div class="hover-tool">
+                                                <a href="javascript:;" class="icons"></a>
+                                                <div class="main-tool ">
+                                                    <div class="cover">
+                                                        <p class="text">
+                                                            <b>"Attachments" helps info :</b>
+                                                            Lorem ipsum dolor sit amet, consec-
+                                                            tetuer adipiscing elit, sed diam nonu-
+                                                            mmy nibh euismod tincidunt ut laor-
+                                                            eet dolore magna aliquam erat.
+                                                        </p>
+                                                        <a href="javascript:;">Ask Questions</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right-input">
+                                            <label class="import-file">
+                                                <input type="file" on-file-upload="selectFile">
+                                                <div class="text-field" data-ng-switch="vm.selectedFile != undefined">
+                                                    <div data-ng-switch-when="false" class="placeholder">No file chosen</div>
+                                                    <div data-ng-switch-when="true">{{ vm.selectedFile.name }}</div>
+                                                </div>
+                                                <div class="import-btn">Browse</div>
+                                            </label>
+                                        </div>
+                                        <div class="uploaded-files">
+                                            <div data-ng-repeat="file in vm.uploadedFiles">
+                                                <p>{{ file.name }}</p>
+                                                <span><a data-ng-click="vm.cancelFileUpload($index)">Remove</a></span>
+                                            </div>
+                                        </div>
+                                        <a data-ng-click="vm.uploadFile()" class="sub icons"></a>
+                                    </div>
+                                    <!-- Group Night -->
+
+                                    <div class="group query-forum-tags six">
+                                        <div class="tool-left">
+                                            <p class="text ">Forum Tags</p>
+                                            <div class="hover-tool">
+                                                <a href="javascript:;" class="icons"></a>
+                                                <div class="main-tool ">
+                                                    <div class="cover">
+                                                        <p class="text">
+                                                            <b>“Forum Tags” helps info :</b>
+                                                            Lorem ipsum dolor sit amet, consec-
+                                                            tetuer adipiscing elit, sed diam nonu-
+                                                            mmy nibh euismod tincidunt ut laor-
+                                                            eet dolore magna aliquam erat.
+                                                        </p>
+                                                        <a href="javascript:;">Ask Questions</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right-input when-choise">
+                                            <div class="drop-full multi-line-options hide-text search-page-show-tool second-edit">
+                                                <select id="SelectBoxTags" class="ignore hide" ng-model="vm.tags"
+                                                        multiple="multiple"
+                                                        data-ng-options="tag for tag in vm.allTags"
+                                                        required></select>
+                                            </div>
+                                            <div class="cover-text-chose">
+                                                <p class="text-chose" data-ng-repeat="tag in vm.tags" title="{{vm.trimTag(tag)}}">
+                                                    {{vm.trimTag(tag)}}
+                                                    <a class="icons ignore" href="javascript:;"></a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Group Six -->
+                                    <!--hide notifications as they will be handled at a later time-->
+                                    <div class="group five" ng-show="false">
+                                        <div class="tool-left">
+                                            <p class="text ">Request Notifications</p>
+                                            <div class="hover-tool">
+                                                <a href="javascript:;" class="icons"></a>
+                                                <div class="main-tool ">
+                                                    <div class="cover">
+                                                        <p class="text">
+                                                            <b>“Request Notifications” helps info :</b>
+                                                            Lorem ipsum dolor sit amet, consec-
+                                                            tetuer adipiscing elit, sed diam nonu-
+                                                            mmy nibh euismod tincidunt ut laor-
+                                                            eet dolore magna aliquam erat.
+                                                        </p>
+                                                        <a href="javascript:;">Ask Questions</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right-input">
+                                            <div class="check-here">
+                                                <div class="stacked">
+                                                    <input type="radio" id="radio011" name="radio1" />
+                                                    <label for="radio011"><span></span>Notify me of follow-up comments via email</label>
+                                                </div>
+                                                <div class="stacked">
+                                                    <input type="radio" id="radio021" name="radio1" />
+                                                    <label for="radio021"><span></span>Notify me of new posts via email</label>
+                                                </div>
+                                                <div class="stacked">
+                                                    <input type="radio" id="radio022" name="radio1" />
+                                                    <label for="radio022"><span></span>Another request notification goes here</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Group Five -->
+
+                                    <div class="bottom-btn create-post-btn">
+                                        <a data-ng-click="toggleModal()" class="export" data-ng-show="!vm.isEdit">Create Post</a>
+                                        <a data-ng-click="toggleModal()" class="export" data-ng-show="vm.isEdit">Save Post</a>
+                                        <a ui-sref="forum" class="export gray">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Reg Page -->
+            </div>
+            <!-- End Body Page -->
+
+            <app-footer></app-footer>
+        </div>
+        <div class="over-lay" data-ng-class="{ show: !vm.modalHidden }" data-ng-click="toggleModal()"></div>
+        <!-- Dark Overlay -->
+        <div class="setting-dash auto-height" data-ng-class="{ hide: vm.modalHidden }">
+            <div class="title">
+                <p>
+                    Confirmation
+                </p>
+            </div>
+            <div class="main-popup">
+                <div class="cover-all">
+                    <div class="country">
+                        <p class="lable confirmation">
+                            Are you sure you want to publish this post?
+                            <br />
+                            Note that your post will be available shortly, please click the refresh button to display the most recent content.
+                        </p>
+                    </div>
+                    <div class="btn-bottom">
+                        <a data-ng-click="toggleModal()" class="cancel">Cancel</a>
+                        <a class="save" data-ng-click="createPost()">Publish now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Save Query popup -->
+        <message show-message="vm.showMessage" message-title="vm.messageTitle" message-text="vm.messageText"></message>
+    </div>

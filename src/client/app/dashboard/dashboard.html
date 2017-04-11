@@ -1,0 +1,666 @@
+<div class="container-fluid">
+    <link rel="stylesheet" href="/css/barHorizontalChart.css" />
+
+    <div class="row dashboard-page">
+        <app-nav menu-item="dashboard">Dashboard</app-nav>
+
+        <div class="main-container" data-jquery-augmentation>
+            <div class="dash-page dashboard">
+                <!-- Head Dash -->
+                <div class="body-dash">
+                    <div id="dashboard-admin-header" data-ng-if="userInfo.isAdmin">
+                        <a href="javascript:;" class="btn-edit"
+                           confirm="Are you sure you want to reload aggregated data from Vertica? All existing data will be deleted!"
+                           confirm-ok="Yes" confirm-cancel="No" data-ng-click="vm.reloadFromVertica()">Reload from Vertica</a>
+                    </div>
+
+                    <ul class="list-one-dashboard span8">
+                        <li class="width-100-minus-308px span4 p-right shadow-box">
+                            <div class="droppable drop-left">
+                                <div class="cover-left draggable">
+                                    <div class="group-left dash-trends-in-group">
+                                        <!-- header -->
+                                        <div class="head">
+                                            <p class="heading">
+                                                {{vm.titles.LEADING_EXPORTERS_BY_WEIGHT}} {{vm.dashboardYear}}
+                                            </p>
+                                            <div class="right-btn">
+                                                <a href="javascript:;" class="load" data-ng-click="vm.leadingExporters.tab === 'exporters' ? vm.downloadLeadingExporters() : vm.downloadLeadingExporterPartners()">
+                                                    <i class="icons"></i>
+                                                </a>
+                                                <a href="javascript:;" class="print"
+                                                   data-ng-click="vm.downloadPdf(vm.leadingExporters.tab === 'exporters' ? '#exportersBarChart' : '#exporterPartnersMap')">
+                                                    <i class="icons"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="year-tag">
+                                            <div class="left-bar">
+                                                <div class="cover">
+                                                    <a class="line-tab" data-ng-class="{ 'active': vm.leadingExporters.tab === 'exporters'}"
+                                                       data-ng-click="vm.leadingExporters.tab = 'exporters'" href="javascript:;">Exporters</a>
+                                                    <a class="line-tab" data-ng-class="{ 'active': vm.leadingExporters.tab === 'partners'}"
+                                                       data-ng-click="vm.leadingExporters.tab = 'partners'" href="javascript:;">Partners</a>
+                                                </div>
+                                            </div>
+                                            <div class="year-main" data-ng-show="vm.leadingExporters.tab === 'partners'">
+                                                <div class="year">
+                                                    <a href="javascript:;" data-ng-repeat="year in vm.yearsRange"
+                                                       data-ng-click="vm.leadingExporters.selectedYear = year; vm.updateExporterPartners()"
+                                                       data-ng-class="{ 'active': vm.leadingExporters.selectedYear === year}">{{year}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- YEAR TAG -->
+                                        <div class="chart-here fix-height">
+                                            <!--Bar Chart-->
+                                            <div class="cover-chart" data-ng-show="vm.leadingExporters.tab === 'exporters'">
+                                                <div class="cover-chart fix-padding">
+                                                    <div id="exportersBarChart" class="bar-hoz-chart"></div>
+                                                    <div class="map-export-pdf" >
+                                                        <div class="left" >
+                                                            <div class="info-body">
+                                                                Ten top exporters (by weight) for Seafood are the <span ng-bind="vm.getCountryName(vm.leadingExporters.data, 'countryName').join(', ')"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <div class="image-container">
+                                                                <img />
+                                                            </div>
+                                                            <table ng-if="vm.leadingExporters.data.length > 0">
+                                                                <thead>
+                                                                    <td>
+                                                                        Exporter
+                                                                    </td>
+                                                                    <td>
+                                                                        Weight
+                                                                    </td>
+                                                                </thead>
+                                                                <tr ng-repeat="row in vm.leadingExporters.data">
+                                                                    <td ng-bind="row.countryName"></td>
+                                                                    <td><span ng-bind="row.totalWeight | number"></span> kg</td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="no-data" ng-if="!vm.leadingExporters.data || vm.leadingExporters.data.length === 0">
+                                                                No Data
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Map -->
+                                            <div class="map-content" data-ng-show="vm.leadingExporters.tab === 'partners'">
+                                                <div class="sumo-dropdown-full leading-exporters-dropdown">
+                                                    <select id="SelectBoxLeadingExporters" class="ignore" ng-model="vm.leadingExporters.selectedExporter"
+                                                            data-ng-options="item as item.countryName for item in vm.leadingExporters.data"
+                                                            ng-change="vm.updateExporterPartners()" single="single"></select>
+                                                </div>
+                                                <div class="cover-map">
+                                                    <div id="exporterPartnersMap"></div>
+                                                    <p data-ng-show="vm.leadingExporters.selectedExporter" class="point importers">Partners</p>
+                                                    <p data-ng-show="vm.leadingExporters.selectedExporter" class="point exporters">Exporter: {{vm.leadingExporters.selectedExporter.countryName}}</p>
+                                                    <div class="map-export-pdf" >
+                                                        <div class="left" >
+                                                            <div class="info-head">Exporter: <span ng-bind="vm.leadingExporters.selectedExporter.countryName"></span><br/>
+                                                                <span ng-bind="vm.leadingExporters.selectedYear"></span>
+                                                            </div>
+                                                            <div class="info-body">
+                                                                Five top destination markets for Seafood are the <span ng-bind="vm.getCountryName(vm.leadingExporters.selectedExporter.children[vm.leadingExporters.selectedYear]).join(', ')"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <div class="image-container">
+                                                                <img />
+                                                                <p data-ng-show="vm.leadingExporters.selectedExporter" class="point importers"><span class="circle importers"></span>Partners</p>
+                                                                <p data-ng-show="vm.leadingExporters.selectedExporter" class="point exporters"><span class="circle exporters"></span>Exporter: {{vm.leadingExporters.selectedExporter.countryName}}</p>
+                                                            </div>
+                                                            <table ng-if="vm.leadingExporters.selectedExporter.children[vm.leadingExporters.selectedYear].length > 0">
+                                                                <thead>
+                                                                    <td>
+                                                                        Partner
+                                                                    </td>
+                                                                    <td>
+                                                                        Weight
+                                                                    </td>
+                                                                </thead>
+                                                                <tr ng-repeat="row in vm.leadingExporters.selectedExporter.children[vm.leadingExporters.selectedYear]">
+                                                                    <td ng-bind="row.name"></td>
+                                                                    <td><span ng-bind="row.value | number"></span> kg</td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="no-data" ng-if="!vm.leadingExporters.selectedExporter.children[vm.leadingExporters.selectedYear] || vm.leadingExporters.selectedExporter.children[vm.leadingExporters.selectedYear].length === 0">
+                                                                No Data
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- CHART -->
+                                    </div>
+                                    <div class="group-left dash-trends-in-group">
+                                        <!-- header -->
+                                        <div class="head">
+                                            <p class="heading">
+                                                {{vm.titles.LEADING_IMPORTERS_BY_WEIGHT}} {{vm.dashboardYear}}
+                                            </p>
+                                            <div class="right-btn">
+                                                <a href="javascript:;" class="load" data-ng-click="vm.leadingImporters.tab === 'importers' ? vm.downloadLeadingImporters() : vm.downloadLeadingImporterPartners()">
+                                                    <i class="icons"></i>
+                                                </a>
+                                                <a href="javascript:;" class="print"
+                                                   data-ng-click="vm.downloadPdf(vm.leadingImporters.tab === 'importers' ? '#importersBarChart' : '#importerPartnersMap')">
+                                                    <i class="icons"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="year-tag">
+                                            <div class="left-bar">
+                                                <div class="cover">
+                                                    <a class="line-tab" data-ng-class="{ 'active': vm.leadingImporters.tab === 'importers'}"
+                                                       data-ng-click="vm.leadingImporters.tab = 'importers'" href="javascript:;">Importers</a>
+                                                    <a class="line-tab" data-ng-class="{ 'active': vm.leadingImporters.tab === 'partners'}"
+                                                       data-ng-click="vm.leadingImporters.tab = 'partners'" href="javascript:;">Partners</a>
+                                                </div>
+                                            </div>
+                                            <div class="year-main" data-ng-show="vm.leadingImporters.tab === 'partners'">
+                                                <div class="year">
+                                                    <a href="javascript:;" data-ng-repeat="year in vm.yearsRange"
+                                                       data-ng-click="vm.leadingImporters.selectedYear = year; vm.updateImporterPartners()"
+                                                       data-ng-class="{ 'active': vm.leadingImporters.selectedYear === year}">{{year}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- YEAR TAG -->
+                                        <div class="chart-here fix-height">
+                                            <!--Bar Chart-->
+                                            <div class="cover-chart" data-ng-show="vm.leadingImporters.tab === 'importers'">
+                                                <div class="cover-chart fix-padding">
+                                                    <div id="importersBarChart" class="bar-hoz-chart"></div>
+                                                    <div class="map-export-pdf" >
+                                                        <div class="left" >
+                                                            <div class="info-body">
+                                                                Ten top importers (by weight) for Seafood are the <span ng-bind="vm.getCountryName(vm.leadingImporters.data, 'countryName').join(', ')"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <div class="image-container">
+                                                                <img />
+                                                            </div>
+                                                            <table ng-if="vm.leadingImporters.data.length > 0">
+                                                                <thead>
+                                                                    <td>
+                                                                        Importer
+                                                                    </td>
+                                                                    <td>
+                                                                        Weight
+                                                                    </td>
+                                                                </thead>
+                                                                <tr ng-repeat="row in vm.leadingImporters.data">
+                                                                    <td ng-bind="row.countryName"></td>
+                                                                    <td><span ng-bind="row.totalWeight | number"></span> kg</td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="no-data" ng-if="!vm.leadingImporters.data || vm.leadingImporters.data.length === 0">
+                                                                No Data
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Map -->
+                                            <div class="map-content" data-ng-show="vm.leadingImporters.tab === 'partners'">
+                                                <div class="sumo-dropdown-full leading-importers-dropdown">
+                                                    <select id="SelectBoxLeadingImporters" class="ignore" ng-model="vm.leadingImporters.selectedImporter"
+                                                            data-ng-options="item as item.countryName for item in vm.leadingImporters.data"
+                                                            ng-change="vm.updateImporterPartners()" single="single"></select>
+                                                </div>
+                                                <div class="cover-map">
+                                                    <div id="importerPartnersMap"></div>
+                                                    <p data-ng-show="vm.leadingImporters.selectedImporter" class="point importers">Importer: {{vm.leadingImporters.selectedImporter.countryName}}</p>
+                                                    <p data-ng-show="vm.leadingImporters.selectedImporter" class="point exporters">Partners</p>
+                                                    <div class="map-export-pdf" >
+                                                        <div class="left" >
+                                                            <div class="info-head">Importer: <span ng-bind="vm.leadingImporters.selectedImporter.countryName"></span><br/>
+                                                                <span ng-bind="vm.leadingImporters.selectedYear"></span>
+                                                            </div>
+                                                            <div class="info-body">
+                                                                Five top destination markets for Seafood are the <span ng-bind="vm.getCountryName(vm.leadingImporters.selectedImporter.children[vm.leadingImporters.selectedYear]).join(', ')"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <div class="image-container">
+                                                                <img />
+                                                                <p data-ng-show="vm.leadingImporters.selectedImporter" class="point importers"><span class="circle importers"></span>Partners</p>
+                                                                <p data-ng-show="vm.leadingImporters.selectedImporter" class="point exporters"><span class="circle exporters"></span>Importer: {{vm.leadingImporters.selectedImporter.countryName}}</p>
+                                                            </div>
+                                                            <table ng-if="vm.leadingImporters.selectedImporter.children[vm.leadingImporters.selectedYear].length > 0">
+                                                                <thead>
+                                                                    <td>
+                                                                        Partner
+                                                                    </td>
+                                                                    <td>
+                                                                        Weight
+                                                                    </td>
+                                                                </thead>
+                                                                <tr ng-repeat="row in vm.leadingImporters.selectedImporter.children[vm.leadingImporters.selectedYear]">
+                                                                    <td ng-bind="row.name"></td>
+                                                                    <td><span ng-bind="row.value | number"></span> kg</td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="no-data" ng-if="!vm.leadingImporters.selectedImporter.children[vm.leadingImporters.selectedYear] || vm.leadingImporters.selectedImporter.children[vm.leadingImporters.selectedYear].length === 0">
+                                                                No Data
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- CHART -->
+                                    </div>
+                                    <div class="group-left dash-trends-in-group">
+                                        <!-- header -->
+                                        <div class="head">
+                                            <p class="heading">
+                                                {{vm.titles.LEADING_IMPORTERS_BY_VALUE}}{{vm.dashboardYear}}
+                                            </p>
+                                            <div class="right-btn">
+                                                <a href="javascript:;" class="load" data-ng-click="vm.leadingCommodityImporters.tab === 'importers' ? vm.downloadLeadingCommodityImporters() : vm.downloadLeadingCommodityImportersCommodities()">
+                                                    <i class="icons"></i>
+                                                </a>
+                                                <a href="javascript:;" class="print"
+                                                   data-ng-click="vm.downloadPdf(vm.leadingCommodityImporters.tab === 'importers' ? '#commodityImportersBarChart' : '#importerCommoditiesBarChart')">
+                                                    <i class="icons"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="year-tag">
+                                            <div class="left-bar">
+                                                <div class="cover">
+                                                    <a class="line-tab" data-ng-class="{ 'active': vm.leadingCommodityImporters.tab === 'importers'}"
+                                                       data-ng-click="vm.leadingCommodityImporters.tab = 'importers'" href="javascript:;">Importers</a>
+                                                    <a class="line-tab" data-ng-class="{ 'active': vm.leadingCommodityImporters.tab === 'commodities'}"
+                                                       data-ng-click="vm.leadingCommodityImporters.tab = 'commodities'" href="javascript:;">Commodities</a>
+                                                </div>
+                                            </div>
+                                            <div class="year-main" data-ng-show="vm.leadingCommodityImporters.tab === 'commodities'">
+                                                <div class="year">
+                                                    <a href="javascript:;" data-ng-repeat="year in vm.yearsRange"
+                                                       data-ng-click="vm.leadingCommodityImporters.selectedYear = year; vm.updateCommodityImporters()"
+                                                       data-ng-class="{ 'active': vm.leadingCommodityImporters.selectedYear === year}">{{year}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- YEAR TAG -->
+                                        <div class="chart-here fix-height">
+                                            <!--Bar Chart-->
+                                            <div class="cover-chart" data-ng-show="vm.leadingCommodityImporters.tab === 'importers'">
+                                                <div class="cover-chart fix-padding">
+                                                    <div id="commodityImportersBarChart" class="bar-hoz-chart"></div>
+                                                    <div class="map-export-pdf" >
+                                                        <div class="left" >
+                                                            <div class="info-body">
+                                                                Ten top importers (by value) for Seafood are the <span ng-bind="vm.getCountryName(vm.leadingImporters.data, 'countryName').join(', ')"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <div class="image-container">
+                                                                <img />
+                                                            </div>
+                                                            <table ng-if="vm.leadingImporters.data.length > 0">
+                                                                <thead>
+                                                                    <td>
+                                                                        Importer
+                                                                    </td>
+                                                                    <td>
+                                                                        Value
+                                                                    </td>
+                                                                </thead>
+                                                                <tr ng-repeat="row in vm.leadingImporters.data">
+                                                                    <td ng-bind="row.countryName"></td>
+                                                                    <td>$ <span ng-bind="row.totalValue | number"></span></td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="no-data" ng-if="!vm.leadingImporters.data || vm.leadingImporters.data.length === 0">
+                                                                No Data
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Map -->
+                                            <div class="map-content" data-ng-show="vm.leadingCommodityImporters.tab === 'commodities'">
+                                                <div class="sumo-dropdown-full leading-importers-dropdown">
+                                                    <select id="SelectBoxLeadingCommodityImporters" class="ignore"
+                                                            data-ng-model="vm.leadingCommodityImporters.selectedImporter"
+                                                            data-ng-options="item as item.countryName for item in vm.leadingCommodityImporters.data"
+                                                            ng-change="vm.updateCommodityImporters()" single="single"></select>
+                                                </div>
+                                                <div class="cover-chart">
+                                                    <div class="cover-chart fix-padding">
+                                                        <div id="importerCommoditiesBarChart" class="bar-hoz-chart"></div>
+                                                        <div class="map-export-pdf" >
+                                                            <div class="left" >
+                                                                <div class="info-head">Importer: <span ng-bind="vm.leadingCommodityImporters.selectedImporter.countryName"></span><br/>
+                                                                    <span ng-bind="vm.leadingCommodityImporters.selectedYear"></span>
+                                                                </div>
+                                                                <div class="info-body">
+                                                                    Ten top importers (by value) for Seafood are the <span ng-repeat="item in vm.leadingCommodityImporters.selectedImporter.children[vm.leadingCommodityImporters.selectedYear]">{{vm.getCommodityCode(item.name)}}<span ng-if="!$last">,</span></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="right">
+                                                                <div class="image-container">
+                                                                    <img />
+                                                                </div>
+                                                                <table ng-if="vm.leadingCommodityImporters.selectedImporter.children[vm.leadingCommodityImporters.selectedYear].length > 0">
+                                                                    <thead>
+                                                                        <td>
+                                                                            Commodity
+                                                                        </td>
+                                                                        <td>
+                                                                            Value
+                                                                        </td>
+                                                                    </thead>
+                                                                    <tr ng-repeat="row in vm.leadingCommodityImporters.selectedImporter.children[vm.leadingCommodityImporters.selectedYear]">
+                                                                        <td ng-bind="vm.getCommodityCode(row.name)"></td>
+                                                                        <td>$ <span ng-bind="row.value | number"></span></td>
+                                                                    </tr>
+                                                                </table>
+                                                                <div class="no-data" ng-if="!vm.leadingCommodityImporters.selectedImporter.children[vm.leadingCommodityImporters.selectedYear] || vm.leadingCommodityImporters.selectedImporter.children[vm.leadingCommodityImporters.selectedYear].length === 0">
+                                                                    No Data
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- CHART -->
+                                    </div>
+                                    <div class="group-left dash-trends-in-group">
+                                        <!-- header -->
+                                        <div class="head">
+                                            <p class="heading">
+                                                {{vm.titles.TOP_COMMODITIES_BY_IMPORT_TRADING_VALUE_OVERALL}}
+                                            </p>
+                                            <div class="right-btn">
+                                                <a href="javascript:;" class="load" data-ng-click="vm.topDollarPerKgCommodities.tab === 'overall' ? vm.downloadTopDollarPerKgCommoditiesOverall() : vm.downloadTopDollarPerKgCommoditiesYearly()">
+                                                    <i class="icons"></i>
+                                                </a>
+                                                <a href="javascript:;" class="print"
+                                                   data-ng-click="vm.downloadPdf('#dollarPerKgCommoditiesBarChart')">
+                                                    <i class="icons"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!-- Year tags -->
+                                        <div class="year-tag">
+                                            <div class="left-bar">
+                                                <div class="cover">
+                                                    <a class="line-tab" data-ng-class="{ 'active': vm.topDollarPerKgCommodities.tab === 'overall'}"
+                                                       data-ng-click="vm.topDollarPerKgCommodities.tab = 'overall'; vm.updateDollarPerKgCommodities()"
+                                                       href="javascript:;">Overall</a>
+                                                    <a class="line-tab" data-ng-class="{ 'active': vm.topDollarPerKgCommodities.tab === 'yearly'}"
+                                                       data-ng-click="vm.topDollarPerKgCommodities.tab = 'yearly'; vm.updateDollarPerKgCommodities()"
+                                                       href="javascript:;">Yearly</a>
+                                                </div>
+                                            </div>
+                                            <div class="year-main" data-ng-show="vm.topDollarPerKgCommodities.tab === 'yearly'">
+                                                <div class="year">
+                                                    <a href="javascript:;" data-ng-repeat="year in vm.yearsRange"
+                                                       data-ng-click="vm.topDollarPerKgCommodities.selectedYear = year; vm.updateDollarPerKgCommodities()"
+                                                       data-ng-class="{ 'active': vm.topDollarPerKgCommodities.selectedYear === year}">{{year}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Bar Chart-->
+                                        <div class="chart-here fix-height">
+                                            <div class="cover-chart">
+                                                <div class="cover-chart fix-padding">
+                                                    <div id="dollarPerKgCommoditiesBarChart" class="bar-hoz-chart"></div>
+                                                    <div class="map-export-pdf" >
+                                                        <div class="left">
+                                                            <div class="info-head">
+                                                                <span ng-if="vm.topDollarPerKgCommodities.tab==='yearly'" ng-bind="vm.topDollarPerKgCommodities.selectedYear"></span>
+                                                                <span ng-if="vm.topDollarPerKgCommodities.tab==='overall'">2003-2015</span>
+                                                            </div>
+                                                            <div class="info-body">
+                                                                Ten top wild-caught commodities (by import trade value per kilogram) are the <span ng-repeat="item in vm.topDollarPerKgCommoditiesYearly">{{vm.getCommodityCode(item.commodityName)}}<span ng-if="!$last">,</span></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <div class="image-container">
+                                                                <img />
+                                                            </div>
+                                                            <table ng-if="vm.topDollarPerKgCommoditiesYearly.length > 0">
+                                                                <thead>
+                                                                    <td>
+                                                                        Commodity
+                                                                    </td>
+                                                                    <td>
+                                                                        dollarsPerKilo
+                                                                    </td>
+                                                                </thead>
+                                                                <tr ng-repeat="row in vm.topDollarPerKgCommoditiesYearly">
+                                                                    <td ng-bind="vm.getCommodityCode(row.commodityName)"></td>
+                                                                    <td>$ <span ng-bind="row.dollarsPerKilo | number"></span> / kg</td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="no-data" ng-if="!vm.topDollarPerKgCommoditiesYearly || vm.topDollarPerKgCommoditiesYearly.length === 0">
+                                                                No Data
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="group-left dash-trends-in-group">
+                                        <!-- header -->
+                                        <div class="head">
+                                            <p class="heading">
+                                                {{vm.titles.TOP_COMMODITIES_BY_IMPORT_TRADING_VALUE_SUM}} {{vm.dashboardYear}}
+                                            </p>
+                                            <div class="right-btn">
+                                                <a href="javascript:;" class="load" data-ng-click="vm.downloadTopOverallValueCommodities()">
+                                                    <i class="icons"></i>
+                                                </a>
+                                                <a href="javascript:;" class="print"
+                                                   data-ng-click="vm.downloadPdf('#topOverallValueCommodities')">
+                                                    <i class="icons"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!--Bar Chart-->
+                                        <div class="chart-here fix-extra-height">
+                                            <div class="cover-chart">
+                                                <div class="cover-chart fix-padding">
+                                                    <div id="topOverallValueCommodities" class="bar-hoz-chart"></div>
+                                                    <div class="map-export-pdf" >
+                                                        <div class="left">
+                                                            <div class="info-head">
+                                                                <span>2003-2015</span>
+                                                            </div>
+                                                            <div class="info-body">
+                                                                Twenty top wild-caught commodities (by export trading value) are the <span ng-repeat="item in vm.topOverallValueCommodities.data">{{vm.getCommodityCode(item.commodityName)}}<span ng-if="!$last">,</span></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <div class="image-container">
+                                                                <img />
+                                                            </div>
+                                                            <table ng-if="vm.topOverallValueCommodities.data.length > 0">
+                                                                <thead>
+                                                                    <td>
+                                                                        Commodity
+                                                                    </td>
+                                                                    <td>
+                                                                        Value
+                                                                    </td>
+                                                                </thead>
+                                                                <tr ng-repeat="row in vm.topOverallValueCommodities.data">
+                                                                    <td ng-bind="vm.getCommodityCode(row.commodityName)"></td>
+                                                                    <td>$ <span ng-bind="row.totalValue | number"></span></td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="no-data" ng-if="!vm.topOverallValueCommodities.data || vm.topOverallValueCommodities.data.length === 0">
+                                                                No Data
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </li>
+                        <li class="width-286px span2 shadow-box" id="contain-six">
+                            <div class="droppable drop-right ">
+                                <div class="cover-right draggable">
+                                    <div class="notificate notifi">
+                                        <div class="disable-div-go"></div>
+                                        <div class="head">
+                                            <p class="title">News</p>
+                                            <div class="right-btn">
+                                                <a href="javascript:;" class="move icons handle handle-right"></a>
+                                                <div class="onoffswitch">
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitchNotifications" checked>
+                                                    <label class="onoffswitch-label" for="onoffswitchNotifications">
+                                                        <span class="onoffswitch-inner"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="tool right-text">
+                                                <select data-ng-model="selectedNewsTopic" data-ng-change="vm.notificationTypeChanged()" class="dropdown-show wide"
+                                                        data-nice-select>
+                                                    <option value="IUU fishing, illegal fishing">All</option>
+                                                    <option value="illegal fishing">Illegal fishing</option>
+                                                    <option value="IUU fishing">IUU fishing</option>
+                                                </select>
+                                                <div class="cover">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <div class="body">
+                                            <ul class="list">
+                                                <li data-ng-repeat="notif in notifications">
+                                                    <p class="img"><img src="images/i/wifi.png" alt="wifi" /></p>
+                                                    <p class="text-detail">
+                                                        {{notif.title}}
+                                                        <a data-ng-href="{{notif.link}}" target="_blank">Read more</a>
+                                                    </p>
+                                                    <p class="time">{{notif.date}}</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <hot-topics></hot-topics>
+                                    <div class="notificate new">
+                                        <div class="disable-div-go"></div>
+                                        <div class="head">
+                                            <p class="title">Resources</p>
+                                            <a href="javascript:;" class="add-more">+ Add</a>
+                                            <div class="right-btn">
+                                                <a href="javascript:;" class="move icons handle"></a>
+                                                <div class="onoffswitch">
+                                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoffswitchNewsCaseSecond" checked>
+                                                    <label class="onoffswitch-label" for="onoffswitchNewsCaseSecond">
+                                                        <span class="onoffswitch-inner"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <div class="body">
+                                            <ul class="list">
+                                                <li data-ng-repeat="stud in casestudies">
+                                                    <p class="img-big">
+                                                        <img src="{{stud.image.url}}" alt="{{stud.image.title}}">
+                                                    </p>
+                                                    <div class="text-right-new">
+                                                        <p class="title">{{stud.title}}</p>
+                                                        <p class="small">{{stud.category}}</p>
+                                                        <p class="hour">{{stud.postDate | date:'MMM d, yyyy'}}</p>
+                                                    </div>
+                                                    <p class="text-detail">
+                                                        {{stud.summary}}
+                                                        <a href="javascript:;" ui-sref="casedetails({ id: stud.id })">Read More</a>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="see-all">
+                                            <a href="javascript:;" class="see">See All Resources</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Body Page -->
+        <div class="clear"></div>
+        <!--  Start Footer -->
+        <app-footer></app-footer>
+        <!-- End Footer -->
+    </div>
+
+    <div class="over-lay "></div>
+    <!-- Dark Overlay -->
+    <div class="setting-dash hide fix-height dashboard-page">
+        <div class="title">
+            <p>
+                Settings : Country List
+            </p>
+        </div>
+        <div class="main-popup">
+            <div class="cover-all">
+                <div class="group-input">
+                    <p class="lable">
+                        Reporter Country
+                    </p>
+                    <div class="drop-down-here arrow-edit">
+                        <select multiple="multiple" data-placeholder="Select" class="ignore dropdown-dashboard-reporter-country" id="SlectBoxOne" required>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Japan">Japan</option>
+                            <option value="United States">United States</option>
+                            <option value="Venezuela">Venezuela</option>
+                        </select>
+                    </div>
+                    <a href="javascript:;" class="sub icons"></a>
+                </div>
+                <span class="border"></span>
+                <div class="country">
+                    <p class="lable">Countries on Dashboard</p>
+                    <div class="clear"></div>
+                    <p class="green-box">Colombia<a href="javascript:;" class="icons unless"></a></p>
+                    <p class="green-box">Germany<a href="javascript:;" class="icons unless"></a></p>
+                    <p class="green-box">Indonesia<a href="javascript:;" class="icons unless"></a></p>
+                    <p class="green-box">Japan<a href="javascript:;" class="icons unless"></a></p>
+                </div>
+                <div class="clear"></div>
+                <span class="border"></span>
+                <div class="btn-bottom">
+                    <a href="javascript:;" class="cancel">Cancel</a>
+                    <a href="javascript:;" class="save">Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popups -->
+    <message show-message="vm.showMessage" message-title="vm.messageTitle" message-text="vm.messageText"></message>
+</div>

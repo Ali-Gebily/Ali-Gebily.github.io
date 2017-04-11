@@ -1,0 +1,29 @@
+<div class="group-user">
+    <div class="cover-guest" data-ng-show="!userInfo.isLoggedIn">
+        <div class="group-btn">
+            <a href="javascript:;" class="btn-reg" data-ng-click="vm.register()">Register</a>
+            <a href="javascript:;" class="btn-login" data-ng-click="vm.login()">Login</a>
+        </div>
+        <a href="javascript:;" class="user">Guest</a>
+        <p class="text">Welcome,</p>
+    </div>
+    <div class="cover-human" data-ng-show="userInfo.isLoggedIn">
+        <a href="javascript:;" class="btn-logout" data-ng-click="vm.logout()">Log Out</a>
+        <span class="border"></span>
+        <div class="person">
+            <p class="text">
+                <span>
+                    Welcome,
+                </span>
+                <a href="javascript:;">
+                    <img data-ng-show="!userInfo.photo && !userInfo.photoUrl" src="images/i/03-ava.png" alt="profile image">
+                    <img data-ng-show="!userInfo.photo && !!userInfo.photoUrl" data-ng-src="{{userInfo.photoUrl}}" alt="profile image">
+                    <img data-ng-show="!!userInfo.photo" data-ng-src="{{userInfo.photo}}" alt="profile image">
+                </a>
+                <a class="john" href="" ui-sref="profile">
+                    {{userInfo.firstName}} {{userInfo.lastName}}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
