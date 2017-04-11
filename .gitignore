@@ -1,0 +1,13 @@
+﻿# ignore list.
+/node_modules
+*.suo
+/obj/Debug
+/WWF.Frontend.sln
+/WWF.Frontend.csproj
+/TradeDataSampleQuery.PNG
+/WWF.Frontend.csproj.user
+/.vs/config
+/Verification/QueryList_CreatedOnFilter.PNG
+/bower_components
+/.tmp
+/report
