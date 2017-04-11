@@ -11,7 +11,7 @@
         "/bower_components/slick-carousel/slick/slick.css",
         "/bower_components/textAngular/dist/textAngular.css",
         "/bower_components/sumoselect/sumoselect.css",
-        "/tmp/styles.css",
+        "/.tmp/styles.css",
         "/bower_components/jquery-ui/themes/base/jquery-ui.css"
     ];
 
