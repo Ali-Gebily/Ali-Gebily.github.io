@@ -1,11 +1,216 @@
 <!DOCTYPE html>
-<html>
-
+<html ng-app="reportGeneratorApp">
 <head>
-   <meta http-equiv="refresh" content="0; url=https://ali-gebily.github.io/src/client/index.html" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>TCO - STATUS REPORT GENERATION</title>
+	<script type="text/javascript" src="js/lib/angular.min.js"></script>
+	<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="js/lib/d3.v3.min.js"></script>
+	<script type="text/javascript" src="js/lib/underscore-min.js"></script>
+	<script type="text/javascript" src="js/lib/materialize.min.js"></script>
+	<link rel="stylesheet" href="css/lib/materialize.min.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<script src="js/helper.js"></script>
+	<script src="js/upload.js"></script>
+	<script src="js/report.js"></script>
+	<script src="js/gantt-chart.js"></script>
 </head>
+<body ng-controller="mainCtrl">
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#" class="brand-logo right">
+				<img class="logo-icon" src="./images/office.png" />
+				Logo
+			</a>
+			<ul id="nav-mobile" class="left hide-on-med-and-down">
+				<img class="back-icon tooltipped" src="./images/back.png" ng-show="page==2" ng-click="previousPage()" data-position="bottom" data-delay="10" data-tooltip="Back">
+			</ul>
+		</div>
+	</nav>
+	<div ng-controller="uploadCtrl" class="upload-file-wrapper" ng-show="page==1">
+		<div class="row">
+			<div class="col s3"></div>
+			<div drop-target class="col s6 upload-file card-panel {{insideDropArea ? 'white' : 'blue-grey lighten-5'}}">
+				<img src="images/upload.png">
+				<p ng-if="!fileDetails">Drag and drop the file here.</p>
+				<p ng-if="fileDetails">{{fileDetails.name}} {{bytesToSize(fileDetails.size)}} </p>
+				<a class="waves-effect waves-light btn red lighten-1" ng-click="selectFile()">Select File</a>
+				<input class="hide" type="file" id="inputFile" ng-model="file" onchange="angular.element(this).scope().readFile(this.files)" />
+				<a class="waves-effect waves-light btn red lighten-1 {{fileDetails ? '' : 'disabled'}}" ng-click="generateReport()">Generate Report</a>
+			</div>
+			<div class="col s3"></div>
+		</div>
+	</div>
+	<div ng-controller="reportCtrl" ng-show="page==2">
+		<div class="row ">
+			<div class="gantt-chart col s10" gantt-chart chart-data="eob"></div>
+		</div>
+		<div class="row">
+			<div class="input-field col s1"></div>
+			<h5>Payment Summary</h5>
+			<div class="input-field col s1"></div>
+			<div class="input-field col s2">
+				<table class="bordered striped">
+					<thead>
+					<tr class="border-none">
+						<th>From: {{formatDate(eob.Payments[0].DateRange["Start"])}}</th>
+						<th>To: {{formatDate(eob.Payments[0].DateRange["End"])}}</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr class="border-none">
+						<td><strong>Payment Gross</strong></td>
+						<td class="text-right">{{calcGross(paymentData) | currency}}</td>
+					</tr>
+					<tr class="border-none">
+						<td><strong>Taxes</strong></td>
+						<td class="text-right">{{-calcTax(eob.Payments[0]) | currency}}</td>
+					</tr>
+					<tr class="border-none">
+						<td><strong>Net</strong></td>
+						<td class="text-right">{{calcGross(paymentData)-calcTax(eob.Payments[0]) | currency}}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="input-field col s1">
+			</div>
+			<div class="input-field col s8">
+				<table class="bordered striped">
+					<thead>
+					<tr>
+						<th data-field="id">id</th>
+						<th data-field="applicableLines">Applicable Lines</th>
+						<th data-field="rate">Rate</th>
+						<th data-field="applicableStart">Applicable Start</th>
+						<th data-field="applicableEnd">Applicable End</th>
+						<th data-field="months">Months</th>
+						<th data-field="days">Days</th>
+						<th data-field="net">Net</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="data in paymentData">
+						<td>{{data.id}}</td>
+						<td>{{data.desc}}</td>
+						<td>{{data.rate}}</td>
+						<td>{{formatDate(data.startTime)}}</td>
+						<td>{{formatDate(data.endTime)}}</td>
+						<td>{{data.months === 0 ? "" : data.months}}</td>
+						<td>{{data.days === 0 ? "" : data.days}}</td>
+						<td class="text-right">{{data.net.toFixed(2)}}</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="input-field col s1"></div>
+		</div>
+		<div class="row">
+			<div class="input-field col s1"></div>
+			<div class="input-field col s10">
+				<div class="outside-range" ng-click="toggleOutSideRange()">
+					<img src="./images/plus.png" ng-if="!outside" />
+					<img src="./images/minus.png" ng-if="outside" />
+					<span class="label">{{outside ? 'Hide' : 'Show'}} lines outside payment range</span>
+				</div>
+				<div id="outSideRangeTable" class="display-none">
+					<table class="bordered striped">
+						<thead>
+							<tr>
+								<th data-field="id">id</th>
+								<th data-field="applicableLines">Applicable Lines</th>
+								<th data-field="rate">Rate</th>
+								<th data-field="applicableStart">Applicable Start</th>
+								<th data-field="applicableEnd">Applicable End</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="data in outSideRangeData">
+								<td>{{data.id}}</td>
+								<td>{{data.desc}}</td>
+								<td>{{data.rate}}</td>
+								<td>{{formatDate(data.startTime)}}</td>
+								<td>{{formatDate(data.endTime)}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s1"></div>
+			<div class="card-panel col s5 cust-info grey lighten-3 pad-1">
+				<div class="row">
+					<div class="col s4"><img src="./images/user.png" class="fade"/>
+					</div>
+					<div class="col s8">
+						<p><strong>Customer Number:</strong> {{eob.Customer.CustomerNumber}}
+						</p>
+						<p><strong>Name:</strong> {{eob.Customer.Name}}
+						</p>
+						<p><strong>Birth Date:</strong> {{eob.Customer.BirthDate}}
+						</p>
+						<p>
+							<strong>Address:</strong> {{eob.Customer.Address.Line1}}<br/>
+							{{eob.Customer.Address.Line2}}<br/>
+							{{eob.Customer.Address.City}}<br/>
+							{{eob.Customer.Address.State}}<br/>
+							{{eob.Customer.Address.ZipCode}}
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="card-panel col s5 required-text pad-1 deep-orange lighten-5">
+				<div class="row">
+					<div class="col s1"><img src="./images/info.png" class="fade-info"/>
+					</div>
+					<div class="col s11">
+						<ul>
+							<li data-ng-repeat="requiredText in eob.Payments[0].RequiredTexts">{{requiredText.RequiredText}}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<body>
+		<div class="row">
+			<div class="input-field col s10" ng-show="!eob.Customer.BankAccount">
+				<div class="card-panel cheque blue lighten-5">
+					<div class="row">
+						<form class="col s12">
+							<div class="row">
+								<div class="input-field col s9"></div>
+								<div class="input-field col s3">
+									<strong>Date</strong><input readonly id="date" value="{{today | date:'MM/dd/yyyy'}}" type="text" class="validate pad-left-3">
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s7">
+									<strong>Payee</strong><input readonly id="payee" type="text" value="{{eob.Customer.Name}}" class="validate pad-left-3">
+								</div>
+								<div class="input-field col s1">
+								</div>
+								<div class="input-field col s4">
+									<strong>Amounts $</strong><input readonly id="dollar" type="text" value="{{calcGross(paymentData)-calcTax(eob.Payments[0]) | currency}}" class="validate pad-left-3">
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="input-field col s12">
+									<strong>Amounts in words</strong><input readonly id="payWord" value="{{inWords(calcGross(paymentData)-calcTax(eob.Payments[0]))}}" type="text" class="validate pad-left-3">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="input-field col s10" ng-show="eob.Customer.BankAccount">
+				<div class="card-panel cheque blue lighten-5">
+					<p>Net Amount was transferred to your back account {{eob.Customer.BankAccount.AccountNumber}} on {{ transferedOn(eob.Payments[0].CheckDate) }}</p>
+				</div>
+			</div>
+			<div class="input-field col s1"></div>
+		</div>
+	</div>
 </body>
-
 </html>

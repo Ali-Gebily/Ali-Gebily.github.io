@@ -1,0 +1,165 @@
+@media print{
+	.cheque{
+		page-break-inside: avoid;
+	}
+}
+
+/* Styles for outside range data */
+.outside-range{
+	font-weight: bold;
+	cursor: pointer;
+	color: #1a70bf;
+}
+.outside-range .label{
+	position: relative;
+	top: -10px;
+	left: 10px;
+}
+
+/* Uploading the file */
+.upload-file-wrapper{
+	text-align: center;
+	padding-top: 8%;
+}
+.upload-file-wrapper p{
+	font-size: 20px;
+}
+.upload-file{
+	padding: 3%!important;
+	border: 3px dashed #157efb;
+}
+
+/* Common Styles */
+body{
+	min-width: 1024px;
+}
+.display-none{
+	display: none;
+}
+.no-wrap{
+	white-space: nowrap;
+}
+.text-right{
+	text-align: right!important;
+}
+.pad-left-3{
+	padding-left: 3%!important;
+}
+.pad-2{
+	padding: 2%!important;
+}
+.pad-left-7{
+	padding-left: 7%!important;
+}
+
+/* Styles for the Nav bar */
+.back-icon{
+	width: 40px;
+	position: relative;
+	top: 10px;
+	left: 20px;
+	cursor: pointer;
+}
+.back-icon:hover{
+	transform: scale(1.1);
+	transition: all 0.2s ease;
+}
+.brand-logo img{
+	position: relative;
+	top: 9PX;
+}
+
+/* Styles for the customer and Payment info */
+.cheque{
+	border: 4px solid #888585;
+	font-size: 20px;
+}
+.cheque input{
+	font-size: 18px;
+}
+#dollar{
+	border: 1px solid #a0a0a0;
+}
+.required-text{
+	margin-left: 3%!important;
+	border: 1px solid #e4bdb8;
+}
+.cust-info{
+	border: 1px solid #c0c0c0;
+}
+.fade{
+	opacity: 0.8;
+}
+.fade-info{
+	opacity: 0.7;
+}
+
+/* Styles for chart */
+.chart {
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+}
+.axis path,.axis line{
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+.highlight{
+	fill: rgba(150, 150, 150, 0.1)
+}
+.highlight:hover{
+	fill: rgba(150, 150, 150, 0.2)
+}
+.highlight-left-date{
+	transform: rotate(-23deg);
+	-ms-transform: rotate(-23deg); /* IE 9 */
+	-webkit-transform: rotate(-23deg); /* Chrome, Safari, Opera */
+}
+.highlight-right-date{
+	transform: rotate(-23deg);
+	-ms-transform: rotate(-23deg); /* IE 9 */
+	-webkit-transform: rotate(-23deg); /* Chrome, Safari, Opera */
+	}
+.gantt-chart{
+	height: 500px;
+	padding-top: 2%!important;
+}
+.bartext{
+	font-size: 15px;
+}
+.tooltip{
+	position: absolute;
+	display: inline-block;
+	background: #606060;
+	opacity: 0.9;
+	color: white;
+	padding: 10px;
+	border-radius: 3px;
+}
+.fill-blue{
+	fill: #149bbb;
+}
+.fill-grey{
+	fill: #b0b0b0;
+}
+.fill-orange{
+	fill: #e57700;
+}
+.fill-yellow{
+	fill: #FFFF00;
+}
+.fill-green {
+	fill: #7cb532;
+}
+.fill-pink {
+	fill: #df92b2;
+}
+
+/* Styles for calculation table */
+.border-none{
+	border-bottom: none!important;
+	background-color: white!important;
+}
+.border-none td{
+	padding: 7px 5px!important;
+}
